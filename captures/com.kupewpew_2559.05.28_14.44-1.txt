@@ -1,0 +1,160 @@
+CURRENT STATS:
+System memory usage:
+  SOn /Norm: 2 samples:
+    Cached: 267MB min, 281MB avg, 296MB max
+    Free: 743MB min, 787MB avg, 832MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 49MB min, 50MB avg, 52MB max
+    Native: 40MB min, 41MB avg, 41MB max
+       Mod : 1 samples:
+    Cached: 329MB min, 329MB avg, 329MB max
+    Free: 772MB min, 772MB avg, 772MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 47MB min, 47MB avg, 47MB max
+    Native: 42MB min, 42MB avg, 42MB max
+
+Per-Package Stats:
+  * com.kupewpew / u0a63 / v1:
+      * com.kupewpew / u0a63 / v1:
+               TOTAL: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+                 Top: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+            (Cached): 0.09%
+
+Summary:
+  * com.kupewpew / u0a63 / v1:
+           TOTAL: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+             Top: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+        (Cached): 0.09%
+
+Run time Stats:
+  SOn /Norm: +1h9m2s237ms
+       Mod : +1h47m13s336ms (running)
+       Low : +11s984ms
+      TOTAL: +2h56m27s557ms
+
+Memory usage:
+  Kernel : 49MB (24 samples)
+  Native : 41MB (24 samples)
+  Persist: 116MB (86 samples)
+  Top    : 14MB (157 samples)
+  ImpFg  : 41MB (192 samples)
+  ImpBg  : 10MB (49 samples)
+  Service: 27MB (253 samples)
+  Receivr: 98KB (198 samples)
+  Home   : 119KB (14 samples)
+  CchEmty: 132MB (252 samples)
+  Cached : 297MB (24 samples)
+  Free   : 782MB (24 samples)
+  TOTAL  : 1.5GB
+  ServRst: 5.5KB (63 samples)
+
+          Start time: 2016-05-28 11:47:20
+  Total elapsed time: +2h56m48s971ms (partial) libart.so
+
+AGGREGATED OVER LAST 24 HOURS:
+System memory usage:
+  SOn /Norm: 9 samples:
+    Cached: 267MB min, 320MB avg, 458MB max
+    Free: 56MB min, 471MB avg, 832MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 32MB min, 42MB avg, 53MB max
+    Native: 39MB min, 41MB avg, 45MB max
+       Mod : 4 samples:
+    Cached: 319MB min, 325MB avg, 332MB max
+    Free: 174MB min, 480MB avg, 778MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 32MB min, 38MB avg, 47MB max
+    Native: 41MB min, 43MB avg, 49MB max
+
+Per-Package Stats:
+  * com.kupewpew / u0a63 / v1:
+      * com.kupewpew / u0a63 / v1:
+               TOTAL: 24% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+                 Top: 24% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+            (Cached): 0.02%
+
+Summary:
+  * com.kupewpew / u0a63 / v1:
+           TOTAL: 24% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+             Top: 24% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+        (Cached): 0.02%
+
+Run time Stats:
+  SOn /Norm: +7h34m20s402ms
+       Mod : +4h22m13s311ms
+       Low : +11s984ms
+      TOTAL: +11h56m45s697ms
+
+Memory usage:
+  Kernel : 40MB (91 samples)
+  Native : 42MB (91 samples)
+  Persist: 109MB (354 samples)
+  Top    : 19MB (856 samples)
+  ImpFg  : 42MB (684 samples)
+  ImpBg  : 11MB (278 samples)
+  Service: 25MB (737 samples)
+  Receivr: 90KB (731 samples)
+  Home   : 205KB (58 samples)
+  LastAct: 14KB (8 samples)
+  CchAct : 1.5KB (4 samples)
+  CchEmty: 129MB (843 samples)
+  Cached : 322MB (91 samples)
+  Free   : 475MB (91 samples)
+  TOTAL  : 1.2GB
+  ServRst: 2.8KB (161 samples)
+
+          Start time: 2016-01-25 21:12:08
+  Total elapsed time: +11h59m35s754ms (partial) libart.so
+
+AGGREGATED OVER LAST 3 HOURS:
+System memory usage:
+  SOn /Norm: 2 samples:
+    Cached: 267MB min, 281MB avg, 296MB max
+    Free: 743MB min, 787MB avg, 832MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 49MB min, 50MB avg, 52MB max
+    Native: 40MB min, 41MB avg, 41MB max
+       Mod : 1 samples:
+    Cached: 329MB min, 329MB avg, 329MB max
+    Free: 772MB min, 772MB avg, 772MB max
+    ZRam: 0.00 min, 0.00 avg, 0.00 max
+    Kernel: 47MB min, 47MB avg, 47MB max
+    Native: 42MB min, 42MB avg, 42MB max
+
+Per-Package Stats:
+  * com.kupewpew / u0a63 / v1:
+      * com.kupewpew / u0a63 / v1:
+               TOTAL: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+                 Top: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+            (Cached): 0.09%
+
+Summary:
+  * com.kupewpew / u0a63 / v1:
+           TOTAL: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+             Top: 97% (3.3MB-12MB-14MB/2.2MB-8.8MB-11MB over 90)
+        (Cached): 0.09%
+
+Run time Stats:
+  SOn /Norm: +1h9m2s237ms
+       Mod : +1h47m15s401ms
+       Low : +11s984ms
+      TOTAL: +2h56m29s622ms
+
+Memory usage:
+  Kernel : 49MB (24 samples)
+  Native : 41MB (24 samples)
+  Persist: 116MB (86 samples)
+  Top    : 14MB (157 samples)
+  ImpFg  : 41MB (192 samples)
+  ImpBg  : 10MB (49 samples)
+  Service: 27MB (253 samples)
+  Receivr: 98KB (198 samples)
+  Home   : 119KB (14 samples)
+  CchEmty: 132MB (252 samples)
+  Cached : 297MB (24 samples)
+  Free   : 782MB (24 samples)
+  TOTAL  : 1.5GB
+  ServRst: 5.5KB (63 samples)
+
+          Start time: 2016-05-28 11:47:20
+  Total elapsed time: +2h56m51s33ms (partial) libart.so
