@@ -21,6 +21,6 @@ public class SpiralEnemyStrategy implements Strategy {
         enemy.setpX(enemy.getpX() + enemy.getSPEED());
         double a =(Math.sin(Math.toRadians(i++)))* 200;
         enemy.setpY(fixpY + (float)a);
-        if(i>=360) i =0;
+        if(i>360) i =1;
     }
 }
