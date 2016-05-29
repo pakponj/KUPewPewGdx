@@ -7,20 +7,25 @@ import com.kupewpew.Enemies.Enemy;
  */
 public class SpiralEnemyStrategy implements Strategy {
 
-    private float fixpY;
+    //    private float fixpX;
     int i = 0;
-    private boolean check = false;
+//    private boolean check = false;
 
     @Override
     public void move(Enemy enemy) {
-        if(!check)
-        {
-            fixpY = enemy.getpY();
-            check = true;
-        }
-        enemy.setpX(enemy.getpX() + enemy.getSPEED());
-        double a =(Math.sin(Math.toRadians(i++)))* 200;
-        enemy.setpY(fixpY + (float)a);
-        if(i>=360) i =0;
+//        if(!check)
+//        {
+//            fixpX = enemy.getpX();
+//            check = true;
+//        }
+
+        enemy.setpY(enemy.getpY() - enemy.getSPEED() / 3);
+        double a = (Math.sin(Math.toRadians(i++)) * 15);
+        enemy.setpX(enemy.getpX() + ((float) a));
+
+//        enemy.setpX(enemy.getpX());
+//        double a =(Math.sin(Math.toRadians(i++)))* 200;
+//        enemy.setpY(fixpY - (float)a - enemy.getSPEED()/3 );
+        if (i >= 45) i *= -1;
     }
 }

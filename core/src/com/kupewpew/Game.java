@@ -2,12 +2,12 @@ package com.kupewpew;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.kupewpew.Enemies.Enemy;
 import com.kupewpew.Factories.ApproachEnemyFactory;
@@ -23,57 +23,70 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	private final static int MAX_BULLET_AMOUNT = 100;
 	private final static int MAX_ENEMIES = 50;
-	private final static float BULLETSPEED = 5f;
+	private final static float BULLETSPEED = 12f;
+	private static Rectangle screenRect;
 
 	private	SpriteBatch batch;
-	private Texture jet;
-	private Texture bulletTexture;
-	private Texture enemyTexture;
 	private Sprite jetSprite;
-	private Sprite bulletSprite;
 	private Player player;
+
 	private List<Enemy> enemiesPool;
-	private List<Sprite>  enemySprites;
-	private List<Bullet> bulletList;
-	private List<Sprite> bulletSprites;
+	private List<Sprite> enemySpritesPool;
+	private List<Bullet> bulletsPool;
+	private List<Sprite> bulletSpritesPool;
+
+	private List<Bullet> bulletsOnScreenList;
+	private List<Sprite> bulletSpritesOnScreenList;
+
+	private List<Enemy> enemiesOnScreenList;
+	private List<Sprite> enemySpritesOnScreenList;
 
 	private static ApproachEnemyFactory approachEnemyFactory = new ApproachEnemyFactory();
 	private static StraightEnemyFactory straightEnemyFactory = new StraightEnemyFactory();
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
-	private int usedBullets = 0;
-	private int enemiesOnScreen = 0;
+//	private int usedBullets = 0;
+//	private int enemiesOnScreen = 0;
 
 	@Override
 	public void create () {
 
 		player = Player.getInstance();
-		bulletList = new ArrayList<Bullet>(MAX_BULLET_AMOUNT);
+		bulletsPool = new ArrayList<Bullet>(MAX_BULLET_AMOUNT);
 		enemiesPool = new ArrayList<Enemy>(MAX_ENEMIES);
 
+		bulletsOnScreenList = new ArrayList<Bullet>();
+		bulletSpritesOnScreenList = new ArrayList<Sprite>();
+		enemiesOnScreenList = new ArrayList<Enemy>();
+		enemySpritesOnScreenList = new ArrayList<Sprite>();
+
 		float w = Gdx.graphics.getWidth();
+		final float h = Gdx.graphics.getHeight();
+
+		Gdx.app.log("Screen's width", "" + Gdx.app.getGraphics().getWidth());
+		Gdx.app.log("Screen's height", "" + Gdx.app.getGraphics().getHeight());
+		screenRect = new Rectangle(0, 0, w, h);
 
 		batch = new SpriteBatch();
 
-		jet = new Texture(Gdx.files.internal("jet64x64.png"));float h = Gdx.graphics.getHeight();
-		bulletTexture = new Texture(Gdx.files.internal("bullet32x32.png"));
-		enemyTexture = new Texture(Gdx.files.internal("invader1_64x64.png"));
+		Texture jet = new Texture(Gdx.files.internal("jet64x64.png"));
+		Texture bulletTexture = new Texture(Gdx.files.internal("bullet32x32.png"));
+		Texture enemyTexture = new Texture(Gdx.files.internal("invader1_64x64.png"));
 
 		jetSprite = new Sprite(jet);
-		bulletSprites = new ArrayList<Sprite>(MAX_BULLET_AMOUNT);
-		enemySprites = new ArrayList<Sprite>(MAX_ENEMIES);
+		bulletSpritesPool = new ArrayList<Sprite>(MAX_BULLET_AMOUNT);
+		enemySpritesPool = new ArrayList<Sprite>(MAX_ENEMIES);
+
 		for(int i = 0; i < MAX_BULLET_AMOUNT; i++) {
-			bulletList.add(new Bullet());
-			bulletSprites.add(new Sprite(bulletTexture));
+			bulletsPool.add(new Bullet(BULLETSPEED));
+			bulletSpritesPool.add(new Sprite(bulletTexture));
 		}
 		for(int i = 0; i < MAX_ENEMIES; i++) {
 			enemiesPool.add(createEnemy());
 			Sprite enemySprite = new Sprite(enemyTexture);
-			enemySprite.rotate90(false);
-			enemySprites.add(enemySprite);
+			enemySpritesPool.add(enemySprite);
 		}
 
-		jetSprite.rotate90(false);
 		float posX = w/2 - jetSprite.getWidth()/2;
 		float posY = h/2 - jetSprite.getHeight()/2;
 		player.setpX(posX);
@@ -84,32 +97,60 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 		new Timer().scheduleTask(new Timer.Task() {
 			@Override
 			public void run() {
-				if(enemiesOnScreen < 20) {
-					Enemy enemy = enemiesPool.get(enemiesOnScreen);
+				if (enemiesOnScreenList.size() < MAX_ENEMIES) {
+					Enemy enemy = enemiesPool.remove(enemiesOnScreenList.size());
+					Sprite enemySprite = enemySpritesPool.remove(enemySpritesOnScreenList.size());
+//					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
+					float spawnX = (float) Math.floor(Math.random() * Gdx.graphics.getWidth());
 
-//					float spawnX = (float) Math.floor(Math.random() * (Gdx.graphics.getWidth() / 2) );
-					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
-					enemy.setpX(0);
-					enemy.setpY(spawnY);
+					enemy.setpX(spawnX);
+					enemy.setpY(h - h / 5);
 
-					Sprite enemySprite = enemySprites.get(enemiesOnScreen++);
+					enemySprite.setPosition(enemy.getpX(), enemy.getpY());
 
-					Gdx.app.log("Enemies", "Enemies on screen: " + enemiesOnScreen);
+					enemiesOnScreenList.add(enemy);
+					enemySpritesOnScreenList.add(enemySprite);
+
+					Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
 				}
 			}
-		},1, 1);
+		}, 3, 0.5f);
+
+//				if(enemiesOnScreen < 20) {
+//					Enemy enemy = enemiesPool.get(enemiesOnScreen);
+//
+////					float spawnX = (float) Math.floor(Math.random() * (Gdx.graphics.getWidth() / 2) );
+//					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
+//					enemy.setpX(0);
+//					enemy.setpY(spawnY);
+//
+////					Sprite enemySprite = enemySprites.get(enemiesOnScreen++);
+//
+//					Gdx.app.log("Enemies", "Enemies on screen: " + enemiesOnScreen);
+//				}
+//	}
+//},1, 2.5f);
 
 		new Timer().scheduleTask(new Timer.Task() {
 			@Override
 			public void run() {
-				Bullet bullet = bulletList.get(usedBullets);
+
+				Bullet bullet = bulletsPool.remove(bulletsOnScreenList.size());
+				Sprite bulletSprite = bulletSpritesPool.remove(bulletSpritesOnScreenList.size());
+
 				bullet.setPosX(player.getpX());
 				bullet.setPosY(player.getpY());
-				Sprite bulletSprite = bulletSprites.get(usedBullets++);
 
-				Gdx.app.log("BulletCount", "Bullet count; " + usedBullets);
+				bulletSprite.setPosition(bullet.getPosX(), bullet.getPosY());
+
+				bulletsOnScreenList.add(bullet);
+				Gdx.app.log("Bullets #", "" + bulletsOnScreenList.size());
+
+				bulletSpritesOnScreenList.add(bulletSprite);
+//				Gdx.app.log("BulletSprites #",""+bulletSpritesOnScreenList.size());
+
 			}
-		}, 1, 2);
+		}, 1, 0.75f);
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -125,101 +166,174 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //		Gdx.app.log("Player", "Player's Live: "+player.getLive() + ", Player's Health: "+player.getHP());
 
 		if( player.isDead() ) {
-			Gdx.app.log("Player'Status", "You are Dead");
+//			Gdx.app.log("Player'Status", "You are Dead");
 		} else {
 			//separate to drawPlayer
 			jetSprite.setPosition(player.getpX(), player.getpY());
-			if(usedBullets > 0) {
-				for(int i = 0; i < usedBullets; i++) {
-					Bullet bullet = bulletList.get(i);
-					Sprite bulletSprite = bulletSprites.get(i);
-					bulletSprite.setAlpha(1);
-					bullet.setPosX(bullet.getPosX() - BULLETSPEED);
 
-					bulletSprite.setPosition(bullet.getPosX(), bullet.getPosY());
-					bulletSprite.draw(batch);
-
-				}
-			}
+			//Pooling bullets
+			drawBullets();
 
 			//drawEnemies
-			if (enemiesOnScreen > 0) {
-				drawEnemy();
+			if (enemiesOnScreenList.size() > 0) {
+				drawEnemies();
 				//bullet collision
 				enemyCollision();
 			}
 			//Player collsion
-			playerCollision();
+//			playerCollision();
 			jetSprite.draw(batch);
 		}
 		batch.end();
 	}
 
-	public void drawEnemy() {
-		for(int i = 0; i < enemiesOnScreen; i++) {
-			Enemy enemy = enemiesPool.get(i);
-			Sprite enemySprite = enemySprites.get(i);
-			//enemy.setpX(enemy.getpX() + enemy.getSPEED());
-			enemy.move();
-			enemySprite.setPosition(enemy.getpX(), enemy.getpY());
+	public void drawBullets() {
+		if (bulletsOnScreenList.size() > 0) {
+
+			for (int i = 0; i < bulletsOnScreenList.size(); i++) {
+				Bullet checkingBullet = bulletsOnScreenList.get(i);
+				Sprite checkingBulletSprite = bulletSpritesOnScreenList.get(i);
+
+				if (isBulletOutOfScreen(checkingBullet, checkingBulletSprite)) {
+					checkingBulletSprite.setAlpha(0);
+					bulletsOnScreenList.remove(i);
+					bulletSpritesOnScreenList.remove(i);
+					bulletsPool.add(checkingBullet);
+					bulletSpritesPool.add(checkingBulletSprite);
+				} else {
+					checkingBulletSprite.setAlpha(1);
+					checkingBulletSprite.translateY(BULLETSPEED);
+				}
+
+//				Gdx.app.log("# of bullets on screen", ""+bulletsOnScreenList.size());
+				checkingBulletSprite.draw(batch);
+			}
+
+		}
+	}
+
+	public boolean isBulletOutOfScreen(Bullet checkingBullet, Sprite checkingBulletSprite) {
+//		float posX = checkingBullet.getPosX();
+//		float posY = checkingBullet.getPosY();
+		Rectangle bulletRect = checkingBulletSprite.getBoundingRectangle();
+//		Gdx.app.log("Bullet's area", bulletRect.getWidth()+"x"+bulletRect.getHeight());
+//		Gdx.app.log("Screen's area", screenRect.getWidth()+"x"+screenRect.getHeight());
+
+		return !bulletRect.overlaps(screenRect);
+
+//		if( posX < 0 || posX > Gdx.graphics.getWidth()) return true;
+//		if( posY < 0 || posY > Gdx.graphics.getHeight()) return true;
+//		return false;
+	}
+
+	public boolean isEnemyOutOfScreen(Enemy checkingEnemy, Sprite checkingEnemySprite) {
+		Rectangle enemyRect = checkingEnemySprite.getBoundingRectangle();
+
+		return !enemyRect.overlaps(screenRect);
+	}
+
+	public void drawEnemies() {
+		for (int i = 0; i < enemiesOnScreenList.size(); i++) {
+			Enemy enemy = enemiesOnScreenList.get(i);
+			Sprite enemySprite = enemySpritesOnScreenList.get(i);
+
+			if (isEnemyOutOfScreen(enemy, enemySprite)) {
+				enemySprite.setAlpha(0);
+				enemiesOnScreenList.remove(i);
+				enemySpritesOnScreenList.remove(i);
+				enemiesPool.add(enemy);
+				enemySpritesPool.add(enemySprite);
+			} else {
+				enemySprite.setAlpha(1);
+				enemy.move();
+				enemySprite.setPosition(enemy.getpX(), enemy.getpY());
+			}
+			Gdx.app.log("# of enemies on screen", "" + enemiesOnScreenList.size());
 			enemySprite.draw(batch);
 		}
 	}
 
 	public void playerCollision() {
-		for(int i = 0; i < enemiesOnScreen; i++) {
+		for (int i = 0; i < enemiesOnScreenList.size(); i++) {
 			Enemy enemy = enemiesPool.get(i);
 			if( (Math.abs(enemy.getpX() -  player.getpX()) < 32) && (Math.abs(enemy.getpY() - player.getpY()) < 32) && !player.isInvulnerable()) {
 				player.setInvulnerable(true);
-
+				player.getHurt();
 				new Timer().scheduleTask(new Timer.Task() {
 					@Override
 					public void run() {
-						Gdx.app.log("Player's Status", "Invulnerable");
+						Gdx.app.log("Player's Status", "Out of Invulnerability");
+						Gdx.app.log("Player's Health", "Health: " + player.getHP());
 						player.setInvulnerable(false);
 					}
 				}, 3, 3, 1 );
-				player.getHurt();
 				break;
 			}
 		}
 	}
 
 	public void enemyCollision() {
-		for(int i = 0; i < usedBullets; i++) {
+		if (enemiesOnScreenList.size() <= 0) return;
 
-			Bullet bullet = bulletList.get(i);
-			Sprite checkingBullet = bulletSprites.get(i);
-			for(int j = 0; j < enemiesOnScreen; j++) {
-				Enemy enemy = enemiesPool.get(j);
-				Sprite checkingEnemy = enemySprites.get(j);
+		for (int i = 0; i < bulletsOnScreenList.size(); i++) {
+			Bullet checkingBullet = bulletsOnScreenList.get(i);
+			Sprite checkingBulletSprite = bulletSpritesOnScreenList.get(i);
+
+			for (int j = 0; j < enemiesOnScreenList.size(); j++) {
+				Enemy checkingEnemy = enemiesOnScreenList.get(j);
+				Sprite checkingEnemySprite = enemySpritesOnScreenList.get(j);
 				//Check collision
-				if( (Math.abs(enemy.getpX() -  bullet.getPosX()) < 32) && (Math.abs(enemy.getpY() - bullet.getPosY()) < 32)) {
-					bulletSprites.get(j).setAlpha(0);
-					bulletList.remove(bullet);
-					bulletList.add(bullet);
-					bulletSprites.remove(checkingBullet);
-					bulletSprites.add(checkingBullet);
-					usedBullets--;
-					enemiesPool.remove(enemy);
-					enemiesPool.add(enemy);
-					enemySprites.remove(checkingEnemy);
-					enemySprites.add(checkingEnemy);
-					enemiesOnScreen--;
-					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
+				Rectangle bulletRect = checkingBulletSprite.getBoundingRectangle();
+				Rectangle enemyRect = checkingEnemySprite.getBoundingRectangle();
+				if (bulletRect.overlaps(enemyRect)) {
+					checkingBulletSprite.setAlpha(0);
+					checkingEnemySprite.setAlpha(0);
+					bulletsOnScreenList.remove(i);
+					bulletSpritesOnScreenList.remove(i);
+					enemiesOnScreenList.remove(j);
+					enemySpritesOnScreenList.remove(j);
 
-					bullet.setPosX(player.getpX());
-					bullet.setPosY(player.getpY());
-					checkingBullet.setPosition(bullet.getPosX(), bullet.getPosY());
-					enemy.setpX(0);
-					enemy.setpY(spawnY);
-					checkingEnemy.setPosition(enemy.getpX(), enemy.getpY());
-					Gdx.app.log("Enemies", "Enemies on screen after destroyed: " + enemiesOnScreen);
-					break;
+					bulletsPool.add(checkingBullet);
+					bulletSpritesPool.add(checkingBulletSprite);
+
+					enemiesPool.add(checkingEnemy);
+					enemySpritesPool.add(checkingEnemySprite);
 				}
 
-			}
+//				if( (Math.abs(checkingEnemy.getpX() -  checkingBullet.getPosX()) < 32) && (Math.abs(checkingEnemy.getpY() - checkingBullet.getPosY()) < 32)) {
+//				if( (Math.abs(checkingEnemy.getpY() - checkingBullet.getPos().x) < 32)) {
+//					checkingBulletSprite.setAlpha(0);
+//					checkingEnemySprite.setAlpha(0);
+//					bulletsOnScreenList.remove(checkingBullet);
+//					bulletSpritesOnScreenList.remove(checkingBulletSprite);
+//					enemiesOnScreenList.remove(checkingEnemy);
+//					enemySpritesOnScreenList.remove(checkingEnemySprite);
 
+//					bulletSprites.get(j).setAlpha(0);
+//					bulletList.remove(bullet);
+//					bulletList.add(bullet);
+//					bulletSprites.remove(checkingBullet);
+//					bulletSprites.add(checkingBullet);
+//					usedBullets--;
+//					enemiesPool.remove(enemy);
+//					enemiesPool.add(enemy);
+//					enemySprites.remove(checkingEnemy);
+//					enemySprites.add(checkingEnemy);
+//					enemiesOnScreen--;
+//					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
+//
+//					bullet.setPosX(player.getpX());
+//					bullet.setPosY(player.getpY());
+//					checkingBullet.setPosition(bullet.getPosX(), bullet.getPosY());
+//					enemy.setpX(0);
+//					enemy.setpY(spawnY);
+//					checkingEnemy.setPosition(enemy.getpX(), enemy.getpY());
+				Gdx.app.log("Enemies", "Enemies on screen after destroyed: " + enemiesOnScreenList.size());
+//					Gdx.app.log("Enemies", "Enemies on screen after destroyed: " + enemiesOnScreen);
+//					break;
+//				}
+
+			}
 		}
 	}
 
@@ -240,18 +354,6 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if(button == Input.Buttons.LEFT) {
-			float posX = screenX - jetSprite.getWidth() / 2;
-			float posY = Gdx.graphics.getHeight() - screenY - jetSprite.getHeight() / 2;
-			player.setpX(posX);
-			player.setpY(posY);
-		}
-		if(button == Input.Buttons.RIGHT) {
-			float posX = Gdx.graphics.getWidth()/2 - jetSprite.getWidth()/2;
-			float posY = Gdx.graphics.getHeight()/2 - jetSprite.getHeight()/2;
-			player.setpX(posX);
-			player.setpY(posY);
-		}
 		return false;
 	}
 
@@ -262,8 +364,10 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-		return false;
+		int sec = (Gdx.graphics.getHeight() - screenY);
+		player.setpX(screenX);
+		player.setpY(sec);
+		return true;
 	}
 
 	@Override
@@ -277,7 +381,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 	}
 
 	private Enemy createEnemy() {
-		int random = (int)Math.floor(Math.random() * 4);
+		int random = (int) Math.floor(Math.random() * 3);
 		if(random == 0) {
 			return approachEnemyFactory.createEnemy();
 		} else if(random == 1) {
