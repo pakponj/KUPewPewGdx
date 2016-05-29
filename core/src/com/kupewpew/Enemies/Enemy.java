@@ -6,7 +6,6 @@ import com.kupewpew.Strategies.Strategy;
  * Created by Pipatpol on 2559-05-26.
  */
 public abstract class Enemy {
-    private int HP;
     private float pX,pY;
     private Strategy strategy;
     private final float SPEED = 8;
@@ -20,13 +19,10 @@ public abstract class Enemy {
     }
 
     public Enemy() {
-        this.HP = 3;
+
     }
 
     public void attack() {
-        //TODO Need to implement.
-    }
-    public void getHurt() {
         //TODO Need to implement.
     }
     public void move() {
@@ -52,10 +48,6 @@ public abstract class Enemy {
     public float getpY() {
         return pY;
 
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
     }
 
 }

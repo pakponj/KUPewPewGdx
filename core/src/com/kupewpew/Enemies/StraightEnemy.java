@@ -14,8 +14,4 @@ public class StraightEnemy extends Enemy{
         super.move();
     }
 
-    @Override
-    public void getHurt() {
-        super.getHurt();
-    }
 }
