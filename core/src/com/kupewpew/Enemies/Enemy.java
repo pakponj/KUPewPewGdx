@@ -18,8 +18,9 @@ public abstract class Enemy {
         this.pY = pY;
     }
 
-    public Enemy() {
-
+    public Enemy(int pX, int pY) {
+        this.pX = pX;
+        this.pY = pY;
     }
 
     public void attack() {
@@ -31,10 +32,6 @@ public abstract class Enemy {
 
     public void setStrategy(Strategy strategy){
         this.strategy = strategy;
-    }
-
-    public int getHP() {
-        return HP;
     }
 
     public float getpX() {
