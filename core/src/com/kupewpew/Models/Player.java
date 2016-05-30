@@ -22,7 +22,8 @@ public class Player {
     }
 
     public static Player getInstance() {
-        if(player == null) player = new Player();
+        if(player==null)
+            player = new Player();
         return player;
     }
 
@@ -46,9 +47,12 @@ public class Player {
 
     public void reset() {
         this.live = 3;
-        this.HP = 0;
         this.score = 0;
-        this.bomb.clear();
+        this.HP = 3;
+        this.bomb = new Stack<Integer>();
+        this.pX = 0;
+        this.pY = 0;
+        this.isInvulnerable = false;
     }
     public boolean isInvulnerable() {
         return isInvulnerable;
