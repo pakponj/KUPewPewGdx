@@ -17,10 +17,10 @@ public class Bullet implements Pool.Poolable {
     private Sprite sprite;
 
     public Bullet(float bulletSpeed, Texture bulletTexture) {
-        this.posX = 0;
-        this.posY = 0;
-        this.speed = bulletSpeed;
-        this.alive = false;
+        posX = 0;
+        posY = 0;
+        speed = bulletSpeed;
+        alive = false;
         sprite = new Sprite(bulletTexture);
     }
 
@@ -49,8 +49,8 @@ public class Bullet implements Pool.Poolable {
 
     @Override
     public void reset() {
-        this.posX = 0;
-        this.posY = 0;
+        posX = 0;
+        posY = 0;
         sprite.setPosition(0,0);
         sprite.setAlpha(0);
         alive = false;

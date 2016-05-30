@@ -12,18 +12,18 @@ import com.kupewpew.Strategies.Strategy;
  */
 public abstract class Enemy implements Pool.Poolable {
 
-    private float pX,pY, speed;
+    private float pX, pY, speed;
     private Strategy strategy;
     private int HP;
     private Sprite sprite;
-    private boolean alive;
+    public boolean alive;
 
     public Enemy(Texture texture, float enemySpeed) {
-        this.pX = 0;
-        this.pY = 0;
-        this.speed = enemySpeed;
-        this.alive = false;
-        this.sprite = new Sprite(texture);
+        pX = 0;
+        pY = 0;
+        speed = enemySpeed;
+        alive = false;
+        sprite = new Sprite(texture);
     }
 
     public void setpX(float pX) {
@@ -66,15 +66,17 @@ public abstract class Enemy implements Pool.Poolable {
     }
 
     public void init(float posX, float posY) {
-        this.pX =  posX;
-        this.pY = posY;
+        pX =  posX;
+        pY = posY;
         sprite.setPosition(posX, posY);
         alive = true;
     }
 
     public void reset() {
-        this.pX = 0;
-        this.pY = 0;
+        pX = 0;
+        pY = 0;
+        sprite.setPosition(pX, pY);
+        sprite.setAlpha(0);
         alive = false;
     }
 
@@ -90,6 +92,7 @@ public abstract class Enemy implements Pool.Poolable {
     public void update() {
         pY -= speed;
         sprite.setPosition(pX, pY);
+        sprite.setAlpha(1);
         if(isOutOfScreen()) alive = false;
     }
 

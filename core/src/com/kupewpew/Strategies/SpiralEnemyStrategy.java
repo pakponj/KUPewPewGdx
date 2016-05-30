@@ -1,5 +1,6 @@
 package com.kupewpew.Strategies;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.kupewpew.Enemies.Enemy;
 
 /**
@@ -22,7 +23,10 @@ public class SpiralEnemyStrategy implements Strategy {
         enemy.setpY(enemy.getpY() - enemy.getSpeed() / 3);
         double a = (Math.sin(Math.toRadians(i++)) * 15);
         enemy.setpX(enemy.getpX() + ((float) a));
-
+        Sprite enemySprite = enemy.getSprite();
+        enemySprite.setPosition(enemy.getpX(), enemy.getpY());
+        enemySprite.setAlpha(1);
+        if(enemy.isOutOfScreen()) enemy.alive = false;
 //        enemy.setpX(enemy.getpX());
 //        double a =(Math.sin(Math.toRadians(i++)))* 200;
 //        enemy.setpY(fixpY - (float)a - enemy.getSPEED()/3 );

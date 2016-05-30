@@ -8,7 +8,9 @@ import com.kupewpew.Enemies.Enemy;
 public class ApproachEnemyStrategy implements Strategy {
     @Override
     public void move(Enemy enemy) {
-        enemy.setpY(enemy.getpY() - enemy.getSpeed());
+
+        enemy.update();
+//        enemy.setpY(enemy.getpY() - enemy.getSpeed());
 //        enemy.setpX(enemy.getpX() + enemy.getSPEED() * Gdx.graphics.getDeltaTime());
     }
 }

@@ -140,7 +140,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 		new Timer().scheduleTask(new Timer.Task() {
 			@Override
 			public void run() {
-				if (enemiesOnScreenList.size() < MAX_ENEMIES) {
+//				if (enemiesOnScreenList.size() < MAX_ENEMIES) {
 //					Enemy enemy = enemiesPool.remove(enemiesOnScreenList.size());
 //					Sprite enemySprite = enemySpritesPool.remove(enemySpritesOnScreenList.size());
 //					float spawnX = (float) Math.floor(Math.random() * Gdx.graphics.getWidth());
@@ -152,14 +152,16 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //
 //					enemiesOnScreenList.add(enemy);
 //					enemySpritesOnScreenList.add(enemySprite);
-					Enemy enemy = enemiesPool.obtain();
-					float spawnX = (float) ( Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 3 ));
-					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getWidth());
-					enemy.init(spawnX, spawnY);
-					enemiesOnScreenList.add(enemy);
+				Enemy enemy = enemiesPool.obtain();
+//				float spawnX = (float) ( Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 3 ));
+//				float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getWidth());
+				float spawnX = (float) ( Math.floor(Math.random() * Gdx.graphics.getWidth()) );
+				float spawnY =  (Gdx.graphics.getHeight() * 2 / 3) + (float) ( Math.floor(Math.random() * (Gdx.graphics.getHeight() / 3) ) );
+				enemy.init(spawnX, spawnY);
+				enemiesOnScreenList.add(enemy);
 
-					Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
-				}
+				Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
+//				}
 			}
 		}, 1, 1f);
 
@@ -304,7 +306,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //		for( Enemy enemy : enemiesOnScreenList ) {
 		for(int i = 0; i < enemiesOnScreenList.size(); i++) {
 			Enemy enemy = enemiesOnScreenList.get(i);
-			enemy.update();
+			enemy.move();
 
 			if( !enemy.isAlive() ) {
 				enemiesOnScreenList.remove(enemy);
@@ -377,9 +379,13 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	public void enemiesCollision() {
 //		if (enemiesOnScreenList.size() <= 0) return;
-		for( Enemy enemy : enemiesOnScreenList ) {
+//		for( Enemy enemy : enemiesOnScreenList ) {
+		for(int i = 0; i < enemiesOnScreenList.size(); i++ ) {
+			Enemy enemy = enemiesOnScreenList.get(i);
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
-			for( Bullet  bullet : bulletsOnScreenList ) {
+//			for( Bullet  bullet : bulletsOnScreenList ) {
+			for(int j = 0; j < bulletsOnScreenList.size(); j++ ) {
+				Bullet bullet = bulletsOnScreenList.get(j);
 				Rectangle bulletRect = bullet.getSprite().getBoundingRectangle();
 				if(bulletRect.overlaps(enemyRect)) {
 					Gdx.app.log("", enemy.getClass()+" got hit");

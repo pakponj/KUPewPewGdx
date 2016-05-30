@@ -9,6 +9,7 @@ public class StraightEnemyStrategy implements Strategy {
     @Override
     public void move(Enemy enemy) {
 //        enemy.setpX(enemy.getpX() + (enemy.getSPEED() * Gdx.graphics.getDeltaTime()) );
-        enemy.setpY(enemy.getpY() - enemy.getSpeed());
+        enemy.update();
+//        enemy.setpY(enemy.getpY() - enemy.getSpeed());
     }
 }
