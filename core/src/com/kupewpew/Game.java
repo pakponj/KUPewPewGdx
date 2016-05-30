@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
@@ -69,7 +68,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 	private static StraightEnemyFactory straightEnemyFactory = new StraightEnemyFactory();
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
-	private Game instance;
+//	private Game instance;
 //	private int usedBullets = 0;
 //	private int enemiesOnScreen = 0;
 
@@ -79,7 +78,6 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 	public void create () {
 
 		player = Player.getInstance();
-//		Texture bulletTexture = new Texture(Gdx.files.internal("bullet32x32.png"));
 
 		final Texture bulletTexture = new Texture(Gdx.files.internal("bullet32x32.png"));
 //		enemyTexture = new Texture(Gdx.files.internal("invader1_64x64.png"));
@@ -155,7 +153,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //					enemiesOnScreenList.add(enemy);
 //					enemySpritesOnScreenList.add(enemySprite);
 					Enemy enemy = enemiesPool.obtain();
-					float spawnX = (float) Math.floor( Gdx.graphics.getHeight() - (Math.random() * Gdx.graphics.getHeight()));
+					float spawnX = (float) ( Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 3 ));
 					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getWidth());
 					enemy.init(spawnX, spawnY);
 					enemiesOnScreenList.add(enemy);
@@ -163,7 +161,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 					Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
 				}
 			}
-		}, 3, 0.5f);
+		}, 1, 1f);
 
 //				if(enemiesOnScreen < 20) {
 //					Enemy enemy = enemiesPool.get(enemiesOnScreen);
@@ -199,7 +197,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 //				Gdx.app.log("Bullets #", "" + bulletsOnScreenList.size());
 //				bulletSpritesOnScreenList.add(bulletSprite);
-				Gdx.app.log("BulletSprites #",""+bulletsOnScreenList.size());
+				Gdx.app.log("Bullets #",""+bulletsOnScreenList.size());
 
 			}
 		}, 1, 0.75f);
@@ -228,11 +226,12 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 			if(bulletsOnScreenList.size() > 0 ) drawBullets();
 
 			//drawEnemies
-			if (enemiesOnScreenList.size() > 0) {
-				drawEnemies();
+			if (enemiesOnScreenList.size() > 0) drawEnemies();
+//			{
+//				drawEnemies();
 				//bullet collision
 //				enemyCollision();
-			}
+//			}
 			//Player collsion
 //			playerCollision();
 			player.getSprite().draw(batch);
@@ -266,9 +265,9 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //			}
 //
 //		}
-
-		for( Bullet bullet : bulletsOnScreenList ) {
-
+		for(int i = 0; i < bulletsOnScreenList.size(); i++) {
+//		for( Bullet bullet : bulletsOnScreenList ) {
+			Bullet bullet = bulletsOnScreenList.get(i);
 			bullet.update();
 
 			if( !bullet.isAlive() ) {
@@ -281,19 +280,19 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	public static Rectangle getScreenRect() { return screenRect; }
 
-	public boolean isBulletOutOfScreen(Bullet checkingBullet, Sprite checkingBulletSprite) {
-//		float posX = checkingBullet.getPosX();
-//		float posY = checkingBullet.getPosY();
-		Rectangle bulletRect = checkingBulletSprite.getBoundingRectangle();
-//		Gdx.app.log("Bullet's area", bulletRect.getWidth()+"x"+bulletRect.getHeight());
-//		Gdx.app.log("Screen's area", screenRect.getWidth()+"x"+screenRect.getHeight());
-
-		return !bulletRect.overlaps(screenRect);
-
-//		if( posX < 0 || posX > Gdx.graphics.getWidth()) return true;
-//		if( posY < 0 || posY > Gdx.graphics.getHeight()) return true;
-//		return false;
-	}
+//	public boolean isBulletOutOfScreen(Bullet checkingBullet, Sprite checkingBulletSprite) {
+////		float posX = checkingBullet.getPosX();
+////		float posY = checkingBullet.getPosY();
+//		Rectangle bulletRect = checkingBulletSprite.getBoundingRectangle();
+////		Gdx.app.log("Bullet's area", bulletRect.getWidth()+"x"+bulletRect.getHeight());
+////		Gdx.app.log("Screen's area", screenRect.getWidth()+"x"+screenRect.getHeight());
+//
+//		return !bulletRect.overlaps(screenRect);
+//
+////		if( posX < 0 || posX > Gdx.graphics.getWidth()) return true;
+////		if( posY < 0 || posY > Gdx.graphics.getHeight()) return true;
+////		return false;
+//	}
 
 //	public boolean isEnemyOutOfScreen(Enemy checkingEnemy, Sprite checkingEnemySprite) {
 //		Rectangle enemyRect = checkingEnemySprite.getBoundingRectangle();
@@ -302,8 +301,9 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 //	}
 
 	public void drawEnemies() {
-		for( Enemy enemy : enemiesOnScreenList ) {
-
+//		for( Enemy enemy : enemiesOnScreenList ) {
+		for(int i = 0; i < enemiesOnScreenList.size(); i++) {
+			Enemy enemy = enemiesOnScreenList.get(i);
 			enemy.update();
 
 			if( !enemy.isAlive() ) {
@@ -312,7 +312,6 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 			}
 			enemy.getSprite().draw(batch);
 		}
-
 //		for (int i = 0; i < enemiesOnScreenList.size(); i++) {
 //			Enemy enemy = enemiesOnScreenList.get(i);
 //			Sprite enemySprite = enemySpritesOnScreenList.get(i);

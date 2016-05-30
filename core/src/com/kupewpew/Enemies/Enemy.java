@@ -14,7 +14,6 @@ public abstract class Enemy implements Pool.Poolable {
 
     private float pX,pY, speed;
     private Strategy strategy;
-//    private final float SPEED = 12f;
     private int HP;
     private Sprite sprite;
     private boolean alive;
@@ -70,6 +69,7 @@ public abstract class Enemy implements Pool.Poolable {
         this.pX =  posX;
         this.pY = posY;
         sprite.setPosition(posX, posY);
+        alive = true;
     }
 
     public void reset() {

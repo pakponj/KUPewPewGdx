@@ -28,6 +28,7 @@ public class Bullet implements Pool.Poolable {
         this.posX = posX;
         this.posY = posY;
         sprite.setPosition(posX, posY);
+        alive = true;
     }
 
     public float getPosX() {
