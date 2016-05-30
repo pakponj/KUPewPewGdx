@@ -15,9 +15,7 @@ public class ApproachEnemyStrategy implements Strategy {
     @Override
     public void move(Enemy enemy) {
         player = player.getInstance();
-        //enemy.setpY(enemy.getpY() - enemy.getSPEED());
         followPlayer(enemy);
-//        enemy.setpX(enemy.getpX() + enemy.getSPEED() * Gdx.graphics.getDeltaTime());
     }
     public int checkPlayerQuadrant(float distanceX, float distanceY) {
         if(distanceX >= 0){
