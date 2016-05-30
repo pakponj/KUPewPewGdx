@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
-import com.kupewpew.Game;
+import com.kupewpew.GameUI.Game;
 import com.kupewpew.Strategies.Strategy;
 
 /**

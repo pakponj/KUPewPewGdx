@@ -1,10 +1,12 @@
-package com.kupewpew;
+package com.kupewpew.GameUI;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
@@ -19,11 +21,17 @@ import com.kupewpew.Models.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game extends ApplicationAdapter implements InputProcessor{
+public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
+//	public static Game instance;
+	public static boolean startGame;
+//	private final static int MAX_BULLET_AMOUNT = 100;
+//	private final static int MAX_ENEMIES = 50;
 	private final static float BULLET_SPEED = 12f;
 	private final static float ENEMY_SPEED = 15f;
 	private static Rectangle screenRect;
+	private final Timer.Task enemyTimer;
+	private final Timer.Task bulletTimer;
 
 	private	SpriteBatch batch;
 	private Player player;
@@ -39,8 +47,18 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 	private static StraightEnemyFactory straightEnemyFactory = new StraightEnemyFactory();
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
-	@Override
-	public void create () {
+	String score;
+	StringBuilder scoreBuilder;
+	private BitmapFont font;
+
+	public Game() {
+
+		//Score Thing
+		score = "Score : 0";
+		scoreBuilder = new StringBuilder("Score : 0");
+		font = new BitmapFont();
+		font.getData().setScale(5,5);
+		font.setColor(Color.BLACK);
 
 		player = Player.getInstance();
 
@@ -77,7 +95,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 		player.getSprite().setPosition(player.getpX(), player.getpY());
 
-		new Timer().scheduleTask(new Timer.Task() {
+		enemyTimer = new Timer().scheduleTask(new Timer.Task() {
 			@Override
 			public void run() {
 				Enemy enemy = enemiesPool.obtain();
@@ -90,7 +108,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 			}
 		}, 1, 0.5f);
 
-		new Timer().scheduleTask(new Timer.Task() {
+		bulletTimer = new Timer().scheduleTask(new Timer.Task() {
 			@Override
 			public void run() {
 
@@ -105,19 +123,51 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 	}
 
+	public static Game getInstance() {
+		return new Game();
+	}
+
 	@Override
-	public void render () {
+	public void create() {
+
+	}
+
+	@Override
+	public void update() {
+
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	public void resetGame() {
+		ScreenManager.setScreen(new GameOverScreen());
+		startGame = false;
+		bulletTimer.cancel();
+		enemyTimer.cancel();
+		Gdx.app.log("Player'Status", "You are Dead");
+	}
+
+	@Override
+	public void render (SpriteBatch sb) {
+
+		this.batch = sb;
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
+		//draw font
+//		font.draw(sb, scoreBuilder.)
+		font.draw(sb, score, 0 , Gdx.graphics.getHeight() -30 );
+		batch.end();
 
-//		Gdx.app.log("Player", "Player's Live: "+player.getLive() + ", Player's Health: "+player.getHP());
+		batch.begin();
 
 		if( player.isDead() ) {
-
-//			Gdx.app.log("Player'Status", "You are Dead");
+			resetGame();
 		} else {
 			//separate to drawPlayer
 			player.getSprite().setPosition(player.getpX(), player.getpY());
@@ -132,7 +182,6 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 			checkCollision();
 		}
-
 		batch.end();
 	}
 
@@ -188,7 +237,6 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 				break;
 			}
 		}
-
 	}
 
 	public void enemiesCollision() {
@@ -254,7 +302,7 @@ public class Game extends ApplicationAdapter implements InputProcessor{
 
 	private Enemy createEnemy() {
 		if( enemyTexture == null ) enemyTexture = new Texture(Gdx.files.internal("invader1_64x64.png"));
-		int random = (int) Math.floor(Math.random() * 2 );
+		int random = (int) Math.floor(Math.random() * 7 );
 		if(random == 0) {
 			return approachEnemyFactory.createEnemy(enemyTexture, ENEMY_SPEED);
 		} else if(random == 1) {

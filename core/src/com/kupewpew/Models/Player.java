@@ -53,13 +53,13 @@ public class Player {
     }
 
     public void reset() {
-        this.live = 3;
-        this.HP = 0;
         this.score = 0;
+        this.HP = 3;
+        this.bomb = new Stack<Integer>();
+        this.pX = 0;
+        this.pY = 0;
+        this.isInvulnerable = false;
     }
-    public static void setTexture(Texture texture) {
-    }
-
     public boolean isInvulnerable() {
         return isInvulnerable;
     }
