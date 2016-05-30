@@ -2,9 +2,11 @@ package com.kupewpew.GameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
@@ -21,6 +23,7 @@ public class GameOverScreen implements Screen {
 
     public GameOverScreen()
     {
+
         stage = new Stage();
         Texture retryText = new Texture(Gdx.files.internal("retry.jpg"));
         bg = new Texture(Gdx.files.internal("gameover.jpg"));
@@ -35,6 +38,23 @@ public class GameOverScreen implements Screen {
         back.setPosition(Gdx.graphics.getHeight() / 2 - bg.getWidth() + 200, Gdx.graphics.getWidth() - bg.getHeight() / 2);
 
         Gdx.input.setInputProcessor(stage);
+
+        Label text;
+        Label.LabelStyle textStyle;
+        BitmapFont font = new BitmapFont();
+        textStyle = new Label.LabelStyle();
+        textStyle.font = font;
+        text = new Label("Gamever",textStyle);
+        text.setFontScale(5);
+        text.setText("Score ");
+        text.setX(Gdx.graphics.getWidth() / 2 - retryText.getWidth() / 4);
+        text.setY(Gdx.graphics.getHeight() / 3 - retryText.getHeight() / 2 + 600);
+
+
+
+
+        stage.addActor(text);
+
 
         stage.addActor(back);
         stage.addActor(retry);

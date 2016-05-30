@@ -2,9 +2,11 @@ package com.kupewpew.GameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kupewpew.Models.Player;
 
@@ -23,7 +25,9 @@ public class GameStartScreen implements Screen {
 
     public GameStartScreen()
     {
+
         stage = new Stage();
+
         Texture startgame = new Texture(Gdx.files.internal("startgame.jpg"));
         bg = new Texture(Gdx.files.internal("MainMenu.jpg"));
         Image back = new Image(bg);
@@ -37,6 +41,9 @@ public class GameStartScreen implements Screen {
         back.setPosition(Gdx.graphics.getHeight() / 2 - bg.getWidth() + 200, Gdx.graphics.getWidth() - bg.getHeight() / 2);
 
         Gdx.input.setInputProcessor(stage);
+
+        //text goes here
+
 
         stage.addActor(back);
         stage.addActor(img);
@@ -62,7 +69,6 @@ public class GameStartScreen implements Screen {
 
     @Override
     public void update() {
-
     }
 
     @Override

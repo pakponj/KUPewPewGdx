@@ -3,8 +3,10 @@ package com.kupewpew.GameUI;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -52,7 +54,19 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 //	private int usedBullets = 0;
 //	private int enemiesOnScreen = 0;
 
+	String score;
+	private BitmapFont font;
+
 	public Game() {
+
+		//Score Thing
+		score = "Score : ";
+		font = new BitmapFont();
+		font.getData().setScale(5,5);
+		font.setColor(Color.BLACK);
+
+
+
 
 		player = Player.getInstance();
 		bulletsPool = new ArrayList<Bullet>(MAX_BULLET_AMOUNT);
@@ -188,12 +202,18 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	@Override
 	public void render (SpriteBatch sb) {
 
+		this.batch = sb;
+
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//draw font
+		batch.begin();
+		font.draw(sb, score, 0 , Gdx.graphics.getHeight() -30 );
+		batch.end();
+
 
 		batch.begin();
 
-//		Gdx.app.log("Player", "Player's Live: "+player.getLive() + ", Player's Health: "+player.getHP());
 
 		if( player.isDead() ) {
 			resetGame();
