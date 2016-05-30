@@ -1,6 +1,7 @@
 package com.kupewpew.Strategies;
 
 import com.kupewpew.Enemies.Enemy;
+import com.kupewpew.Models.Player;
 
 /**
  * Created by Pipatpol on 2559-05-27.
@@ -10,10 +11,10 @@ public class ApproachEnemyStrategy implements Strategy {
                       secondQuadrant = 2,
                       thirdQuadrant = 3,
                       forthQuadrant = 4;
-    Game game;
+    private Player player;
     @Override
     public void move(Enemy enemy) {
-        game = game.getInstance();
+        player = player.getInstance();
         //enemy.setpY(enemy.getpY() - enemy.getSPEED());
         followPlayer(enemy);
 //        enemy.setpX(enemy.getpX() + enemy.getSPEED() * Gdx.graphics.getDeltaTime());
@@ -31,11 +32,11 @@ public class ApproachEnemyStrategy implements Strategy {
     }
 
     public float getDistanceXFromPlayer(Enemy enemy) {
-        return enemy.getpX() - game.getPlayer().getpX();
+        return enemy.getpX() - player.getpX();
     }
 
     public float getDistanceYFromPlayer(Enemy enemy) {
-        return enemy.getpY() - game.getPlayer().getpY();
+        return enemy.getpY() - player.getpY();
     }
 
     public void followPlayer(Enemy enemy) {

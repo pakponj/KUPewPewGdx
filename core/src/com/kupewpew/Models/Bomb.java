@@ -16,4 +16,24 @@ public class Bomb {
     public boolean isCollidWithPlayer() {
         return false;
     }
+
+    public float getpX() {
+        return pX;
+    }
+
+    public void setpX(float pX) {
+        this.pX = pX;
+    }
+
+    public float getPy() {
+        return py;
+    }
+
+    public void setPy(float py) {
+        this.py = py;
+    }
+
+    public float getSPEED() {
+        return SPEED;
+    }
 }
