@@ -19,7 +19,7 @@ public class SpiralEnemyStrategy implements Strategy {
 //            check = true;
 //        }
 
-        enemy.setpY(enemy.getpY() - enemy.getSPEED() / 3);
+        enemy.setpY(enemy.getpY() - enemy.getSpeed() / 3);
         double a = (Math.sin(Math.toRadians(i++)) * 15);
         enemy.setpX(enemy.getpX() + ((float) a));
 

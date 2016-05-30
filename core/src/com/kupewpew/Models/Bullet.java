@@ -1,29 +1,36 @@
 package com.kupewpew.Models;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Pool;
+import com.kupewpew.Game;
+
 /**
  * Created by Pipatpol on 2559-05-27.
  */
-public class Bullet {
+public class Bullet implements Pool.Poolable {
 
     //    private Vector2 pos, direction;
-    private float posX, posY;
-    private int attack;
+    private float posX, posY, speed;
+    private boolean alive;
+    private Sprite sprite;
 
-    public Bullet(float bulletSpeed) {
-//        pos = new Vector2( 0, 0 );
-//        direction = new Vector2( 0, bulletSpeed );
-
+    public Bullet(float bulletSpeed, Texture bulletTexture) {
         this.posX = 0;
         this.posY = 0;
-        this.attack = 5;
+        this.speed = bulletSpeed;
+        this.alive = false;
+        sprite = new Sprite(bulletTexture);
     }
 
-//    public Vector2 getPos() { return pos; }
-
-//    public Vector2 getDirection() { return direction; }
+    public void init(float posX, float posY) {
+        this.posX = posX;
+        this.posY = posY;
+        sprite.setPosition(posX, posY);
+    }
 
     public float getPosX() {
-//        return pos.x;
         return posX;
     }
 
@@ -39,32 +46,30 @@ public class Bullet {
         this.posY = posY;
     }
 
-    public int getAttack() {
-        return attack;
+    @Override
+    public void reset() {
+        this.posX = 0;
+        this.posY = 0;
+        sprite.setPosition(0,0);
+        sprite.setAlpha(0);
+        alive = false;
     }
 
-    public void setAttack(int attack) {
-        this.attack = attack;
+    public boolean isOutOfScreen() {
+        Rectangle bulletRect = sprite.getBoundingRectangle();
+        return !bulletRect.overlaps(Game.getScreenRect());
     }
 
-//    public boolean isOutOfScreen() {
-//        if( posX < 0 || posX > Gdx.graphics.getWidth()) return true;
-//        if( posY < 0 || posY > Gdx.graphics.getHeight()) return true;
-//        return false;
-//    }
+    public Sprite getSprite() { return sprite; }
 
-    public boolean isHit(){
-        //TODO Need to implement.
-        return false;
+    public void update() {
+        posY += speed;
+        sprite.setPosition(posX, posY);
+        sprite.setAlpha(1);
+        if(isOutOfScreen()) alive = false;
     }
 
-//    public void setPos(Vector2 newPosition) {
-//        pos = newPosition;
-//    }
-
-//    public void update() {
-//        pos.add(direction);
-//        pos.scl( Gdx.graphics.getDeltaTime() );
-//    }
+    public boolean isAlive() { return alive; }
 
 }
+

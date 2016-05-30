@@ -1,11 +1,16 @@
 package com.kupewpew.Models;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 import java.util.Stack;
 
 /**
  * Created by Pipatpol on 2559-05-26.
  */
 public class Player {
+
     private int score;
     private int HP;
     private int live;
@@ -13,26 +18,27 @@ public class Player {
     private boolean isInvulnerable;
     private float pX,pY;
     private Stack<Integer> bomb;
+    private Sprite sprite;
 
-    public static Player getInstance(String name) {
-        if (player == null) {
-            player = new Player(name);
-        }
-        return player;
-    }
+//    public static Player getInstance(String name) {
+//        if (player == null) {
+//            player = new Player(name);
+//        }
+//        return player;
+//    }
 
     public static Player getInstance() {
         if(player == null) player = new Player();
         return player;
     }
 
-    private Player(String name) {
-        this.live = 3;
-        this.score = 0;
-        this.HP = 3;
-        this.bomb = new Stack<Integer>();
-        this.isInvulnerable = false;
-    }
+//    private Player(String name) {
+//        this.live = 3;
+//        this.score = 0;
+//        this.HP = 3;
+//        this.bomb = new Stack<Integer>();
+//        this.isInvulnerable = false;
+//    }
 
     private Player() {
         this.live = 3;
@@ -42,14 +48,18 @@ public class Player {
         this.pX = 0;
         this.pY = 0;
         this.isInvulnerable = false;
+        Texture jetTexture = new Texture(Gdx.files.internal("jet64x64.png"));
+        this.sprite = new Sprite(jetTexture);
     }
 
     public void reset() {
         this.live = 3;
         this.HP = 0;
         this.score = 0;
-        this.bomb.clear();
     }
+    public static void setTexture(Texture texture) {
+    }
+
     public boolean isInvulnerable() {
         return isInvulnerable;
     }
@@ -113,4 +123,7 @@ public class Player {
     public void setpY(float pY) {
         this.pY = pY;
     }
+
+    public Sprite getSprite() { return sprite; }
+
 }

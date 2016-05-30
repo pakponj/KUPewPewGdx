@@ -1,5 +1,6 @@
 package com.kupewpew.Factories;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kupewpew.Enemies.Enemy;
 import com.kupewpew.Enemies.SpiralEnemy;
 import com.kupewpew.Strategies.SpiralEnemyStrategy;
@@ -11,8 +12,8 @@ import com.kupewpew.Strategies.Strategy;
 public class SpiralEnemyFactory implements EnemyFactory {
     Strategy spiralEnemyStrategy = new SpiralEnemyStrategy();
     @Override
-    public Enemy createEnemy() {
-        Enemy spiralEnemy = new SpiralEnemy();
+    public Enemy createEnemy(Texture texture, float speed) {
+        Enemy spiralEnemy = new SpiralEnemy(texture, speed);
         spiralEnemy.setStrategy(spiralEnemyStrategy);
         return spiralEnemy;
     }

@@ -1,5 +1,6 @@
 package com.kupewpew.Factories;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kupewpew.Enemies.ApproachEnemy;
 import com.kupewpew.Enemies.Enemy;
 import com.kupewpew.Strategies.ApproachEnemyStrategy;
@@ -11,9 +12,10 @@ import com.kupewpew.Strategies.Strategy;
  */
 public class ApproachEnemyFactory implements EnemyFactory {
     Strategy approachingStrategy = new ApproachEnemyStrategy();
+
     @Override
-    public Enemy createEnemy() {
-        Enemy approachingEnemy = new ApproachEnemy();
+    public Enemy createEnemy(Texture texture, float speed) {
+        Enemy approachingEnemy = new ApproachEnemy(texture, speed);
         approachingEnemy.setStrategy(approachingStrategy);
         return approachingEnemy;
     }
