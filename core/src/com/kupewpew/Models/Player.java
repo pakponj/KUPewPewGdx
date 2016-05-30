@@ -22,8 +22,9 @@ public class Player {
     }
 
     public static Player getInstance() {
-        return player = new Player();
-        //return player;
+        if(player==null)
+            player = new Player();
+        return player;
     }
 
     private Player(String name) {

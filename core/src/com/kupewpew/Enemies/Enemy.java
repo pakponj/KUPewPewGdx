@@ -9,7 +9,7 @@ public abstract class Enemy {
     private int HP;
     private float pX,pY;
     private Strategy strategy;
-    private final float SPEED = 8;
+    private final float SPEED = 12f;
 
     public void setpX(float pX) {
         this.pX = pX;
@@ -51,7 +51,6 @@ public abstract class Enemy {
 
     public float getpY() {
         return pY;
-
     }
 
     public void setHP(int HP) {
