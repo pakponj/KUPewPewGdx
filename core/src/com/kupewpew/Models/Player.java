@@ -127,4 +127,5 @@ public class Player {
 
     public Sprite getSprite() { return sprite; }
 
+    public void addScore(int score) { this.score += score; }
 }
