@@ -17,11 +17,14 @@ import com.kupewpew.Factories.SpiralEnemyFactory;
 import com.kupewpew.Factories.StraightEnemyFactory;
 import com.kupewpew.Models.Bullet;
 import com.kupewpew.Models.Player;
+import com.kupewpew.Models.Score;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Game extends ApplicationAdapter implements InputProcessor,Screen {
+public class Game extends ApplicationAdapter implements InputProcessor,Screen ,Observer {
 
 	public static Game instance;
 	public static boolean startGame;
@@ -54,19 +57,25 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 //	private int usedBullets = 0;
 //	private int enemiesOnScreen = 0;
 
+	String scoreText;
 	String score;
 	private BitmapFont font;
+
+	private Score observable;
+	private static int maxScore;
 
 	public Game() {
 
 		//Score Thing
+
 		score = "Score : ";
+		scoreText = "Score : ";
 		font = new BitmapFont();
 		font.getData().setScale(5,5);
 		font.setColor(Color.BLACK);
 
-
-
+		observable = new Score();
+		observable.addObserver(this);
 
 		player = Player.getInstance();
 		bulletsPool = new ArrayList<Bullet>(MAX_BULLET_AMOUNT);
@@ -173,7 +182,9 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	}
 
 	public static Game getInstance() {
-		return new Game();
+		if(instance == null)
+			instance = new Game();
+		return instance;
 	}
 
 	@Override
@@ -196,11 +207,13 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		startGame = false;
 		bulletTimer.cancel();;
 		enemyTimer.cancel();
-		Gdx.app.log("Player'Status", "You are Dead");
+		instance = new Game();
 	}
 
 	@Override
 	public void render (SpriteBatch sb) {
+
+		Gdx.app.log("Score" , score);
 
 		this.batch = sb;
 
@@ -216,6 +229,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 
 		if( player.isDead() ) {
+			maxScore = observable.getScore();
 			resetGame();
 //			Gdx.app.log("Player'Status", "You are Dead");
 		} else {
@@ -332,12 +346,17 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 			Sprite checkingBulletSprite = bulletSpritesOnScreenList.get(i);
 
 			for (int j = 0; j < enemiesOnScreenList.size(); j++) {
+
 				Enemy checkingEnemy = enemiesOnScreenList.get(j);
 				Sprite checkingEnemySprite = enemySpritesOnScreenList.get(j);
 				//Check collision
 				Rectangle bulletRect = checkingBulletSprite.getBoundingRectangle();
 				Rectangle enemyRect = checkingEnemySprite.getBoundingRectangle();
 				if (bulletRect.overlaps(enemyRect)) {
+
+					observable.ready();
+					observable.updateScore();
+
 					checkingBulletSprite.setAlpha(0);
 					checkingEnemySprite.setAlpha(0);
 					bulletsOnScreenList.remove(i);
@@ -352,38 +371,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 					enemySpritesPool.add(checkingEnemySprite);
 				}
 
-//				if( (Math.abs(checkingEnemy.getpX() -  checkingBullet.getPosX()) < 32) && (Math.abs(checkingEnemy.getpY() - checkingBullet.getPosY()) < 32)) {
-//				if( (Math.abs(checkingEnemy.getpY() - checkingBullet.getPos().x) < 32)) {
-//					checkingBulletSprite.setAlpha(0);
-//					checkingEnemySprite.setAlpha(0);
-//					bulletsOnScreenList.remove(checkingBullet);
-//					bulletSpritesOnScreenList.remove(checkingBulletSprite);
-//					enemiesOnScreenList.remove(checkingEnemy);
-//					enemySpritesOnScreenList.remove(checkingEnemySprite);
-
-//					bulletSprites.get(j).setAlpha(0);
-//					bulletList.remove(bullet);
-//					bulletList.add(bullet);
-//					bulletSprites.remove(checkingBullet);
-//					bulletSprites.add(checkingBullet);
-//					usedBullets--;
-//					enemiesPool.remove(enemy);
-//					enemiesPool.add(enemy);
-//					enemySprites.remove(checkingEnemy);
-//					enemySprites.add(checkingEnemy);
-//					enemiesOnScreen--;
-//					float spawnY = (float) Math.floor(Math.random() * Gdx.graphics.getHeight());
-//
-//					bullet.setPosX(player.getpX());
-//					bullet.setPosY(player.getpY());
-//					checkingBullet.setPosition(bullet.getPosX(), bullet.getPosY());
-//					enemy.setpX(0);
-//					enemy.setpY(spawnY);
-//					checkingEnemy.setPosition(enemy.getpX(), enemy.getpY());
-//				Gdx.app.log("Enemies", "Enemies on screen after destroyed: " + enemiesOnScreenList.size());
-//					Gdx.app.log("Enemies", "Enemies on screen after destroyed: " + enemiesOnScreen);
-//					break;
-//				}
 
 			}
 		}
@@ -441,5 +428,16 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		} else {
 			return spiralEnemyFactory.createEnemy();
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+
+		score = "Score : " + observable.getScore();
+	}
+
+	public static int getMaxScore()
+	{
+		return maxScore;
 	}
 }

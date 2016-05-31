@@ -117,4 +117,7 @@ public class Player {
     public void setpY(float pY) {
         this.pY = pY;
     }
+
+    public void updateScore(){ this.score +=1; };
+
 }

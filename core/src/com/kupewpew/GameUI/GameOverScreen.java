@@ -46,7 +46,7 @@ public class GameOverScreen implements Screen {
         textStyle.font = font;
         text = new Label("Gamever",textStyle);
         text.setFontScale(5);
-        text.setText("Score ");
+        text.setText("Final Score : " + Game.getInstance().getMaxScore());
         text.setX(Gdx.graphics.getWidth() / 2 - retryText.getWidth() / 4);
         text.setY(Gdx.graphics.getHeight() / 3 - retryText.getHeight() / 2 + 600);
 
