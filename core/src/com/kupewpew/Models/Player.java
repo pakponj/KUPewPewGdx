@@ -69,7 +69,6 @@ public class Player {
     }
 
     public void getHurt() {
-        //if(!isInvulnerable())
             this.setHP(this.HP - 1);
     }
 

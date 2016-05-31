@@ -225,6 +225,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 	public void playerCollision() {
 		Rectangle playerRect = player.getSprite().getBoundingRectangle();
+        playerRect.setSize(player.getSprite().getWidth()*0.3F, player.getSprite().getHeight()*0.3F);
+        playerRect.setPosition( playerRect.x+(player.getSprite().getWidth()-playerRect.width)/2F, playerRect.y+(player.getSprite().getHeight()-playerRect.height)/3);
 		for( Enemy enemy : enemiesOnScreenList ) {
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
 			if( playerRect.overlaps(enemyRect) && !player.isInvulnerable()) {
