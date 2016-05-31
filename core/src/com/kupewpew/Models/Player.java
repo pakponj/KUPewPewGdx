@@ -69,7 +69,8 @@ public class Player {
     }
 
     public void getHurt() {
-        this.setHP(this.HP - 1);
+        //if(!isInvulnerable())
+            this.setHP(this.HP - 1);
     }
 
     public boolean isDead() {

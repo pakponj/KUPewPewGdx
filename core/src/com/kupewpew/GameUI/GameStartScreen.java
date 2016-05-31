@@ -51,8 +51,8 @@ public class GameStartScreen implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 Gdx.app.log("Clicked", "Clicked");
-                ScreenManager.setScreen(Game.getInstance());
                 Game.startGame = true;
+                ScreenManager.setScreen(Game.getInstance());
 
                 //stage.clear();
             }

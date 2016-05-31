@@ -227,10 +227,10 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		Rectangle playerRect = player.getSprite().getBoundingRectangle();
 		for( Enemy enemy : enemiesOnScreenList ) {
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
-			if( playerRect.overlaps(enemyRect) ) {
+			if( playerRect.overlaps(enemyRect) && !player.isInvulnerable()) {
 				Gdx.app.log("", "Player got hit");
-				player.setInvulnerable(true);
 				player.getHurt();
+				player.setInvulnerable(true);
 				new Timer().scheduleTask(new Timer.Task() {
 					@Override
 					public void run() {
