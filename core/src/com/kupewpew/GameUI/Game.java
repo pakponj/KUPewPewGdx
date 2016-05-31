@@ -234,7 +234,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				new Timer().scheduleTask(new Timer.Task() {
 					@Override
 					public void run() {
-						Gdx.app.log("Player's Status", "Out of Invulnerability, Health: "+player.getHP());
 						player.setInvulnerable(false);
 					}
 				}, 3, 3, 1);
@@ -256,8 +255,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 					enemiesOnScreenList.remove( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
-//					player.setScore(enemy.getScore());
-//					player.setScore(player.getScore() + 1);
+					player.addScore( enemy.getScore() );
 				}
 			}
 		}
