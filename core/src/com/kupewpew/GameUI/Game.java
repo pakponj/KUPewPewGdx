@@ -23,7 +23,6 @@ import java.util.List;
 
 public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
-//	public static Game instance;
 	public static boolean startGame;
 //	private final static int MAX_BULLET_AMOUNT = 100;
 //	private final static int MAX_ENEMIES = 50;
@@ -49,13 +48,17 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 	String score;
 	StringBuilder scoreBuilder;
+	StringBuilder hpBuilder;
 	private BitmapFont font;
 
 	public Game() {
 
 		//Score Thing
-		score = "Score : 0";
-		scoreBuilder = new StringBuilder("Score : 0");
+
+//		score = "Score : 0";
+		scoreBuilder = new StringBuilder("Score : ");
+		hpBuilder = new StringBuilder("HP : ");
+
 		font = new BitmapFont();
 		font.getData().setScale(5,5);
 		font.setColor(Color.BLACK);
@@ -160,8 +163,9 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 		batch.begin();
 		//draw font
-//		font.draw(sb, scoreBuilder.)
-		font.draw(sb, score, 0 , Gdx.graphics.getHeight() -30 );
+		font.draw(sb, scoreBuilder.toString() + player.getScore(), 0, Gdx.graphics.getHeight() * 0.9f );
+		font.draw(sb, hpBuilder.toString() + player.getHP(), Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.8f );
+//		font.draw(sb, score, 0 , Gdx.graphics.getHeight() -30 );
 		batch.end();
 
 		batch.begin();
@@ -252,6 +256,12 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 					enemiesOnScreenList.remove( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
+					//score added depends on enemy type
+					//Straight 5
+					//Sprial 10
+					//Approach 25
+					//Something like that
+					player.setScore(player.getScore() + 1);
 				}
 			}
 		}
