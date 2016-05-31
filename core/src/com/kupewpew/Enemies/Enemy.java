@@ -104,4 +104,5 @@ public abstract class Enemy implements Pool.Poolable {
     public boolean isAlive() { return alive; }
 
     public int getScore() { return score; }
+
 }

@@ -15,6 +15,7 @@ import com.kupewpew.Enemies.Enemy;
 import com.kupewpew.Factories.ApproachEnemyFactory;
 import com.kupewpew.Factories.SpiralEnemyFactory;
 import com.kupewpew.Factories.StraightEnemyFactory;
+import com.kupewpew.Models.Bomb;
 import com.kupewpew.Models.Bullet;
 import com.kupewpew.Models.Player;
 
@@ -24,10 +25,11 @@ import java.util.List;
 public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 	public static boolean startGame;
-//	private final static int MAX_BULLET_AMOUNT = 100;
-//	private final static int MAX_ENEMIES = 50;
-	private final static float BULLET_SPEED = 12f;
-	private final static float ENEMY_SPEED = 15f;
+
+	public final static float BULLET_SPEED = 12f;
+	public final static float ENEMY_SPEED = 15f;
+	public final static float BOMB_SPEED = 20f;
+
 	private static Rectangle screenRect;
 	private final Timer.Task enemyTimer;
 	private final Timer.Task bulletTimer;
@@ -42,20 +44,25 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	private List<Enemy> enemiesOnScreenList;
 	private Pool<Enemy> enemiesPool;
 
+	private List<Bomb> bombsOnScreenList;
+	private Pool<Bomb> bombsPool;
+
+	private List<Bomb> explosionsOnScreenList;
+
 	private static ApproachEnemyFactory approachEnemyFactory = new ApproachEnemyFactory();
 	private static StraightEnemyFactory straightEnemyFactory = new StraightEnemyFactory();
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
-	String score;
 	StringBuilder scoreBuilder;
 	StringBuilder hpBuilder;
+
+	private Bomb bombToRemove;
+
 	private BitmapFont font;
 
 	public Game() {
 
 		//Score Thing
-
-//		score = "Score : 0";
 		scoreBuilder = new StringBuilder("Score : ");
 		hpBuilder = new StringBuilder("HP : ");
 
@@ -68,6 +75,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		final Texture bulletTexture = new Texture(Gdx.files.internal("bullet32x32.png"));
 		bulletsOnScreenList = new ArrayList<Bullet>();
 		enemiesOnScreenList = new ArrayList<Enemy>();
+		bombsOnScreenList = new ArrayList<Bomb>();
+		explosionsOnScreenList = new ArrayList<Bomb>();
 
 		bulletsPool = new Pool<Bullet>() {
 			@Override
@@ -79,6 +88,12 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 			@Override
 			protected Enemy newObject() {
 				return createEnemy();
+			}
+		};
+		bombsPool = new Pool<Bomb>() {
+			@Override
+			protected Bomb newObject() {
+				return new Bomb(Game.BOMB_SPEED);
 			}
 		};
 
@@ -109,7 +124,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 				Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
 			}
-		}, 1, 0.5f);
+		}, 1, 0.75f);
 
 		bulletTimer = new Timer().scheduleTask(new Timer.Task() {
 			@Override
@@ -182,6 +197,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 			//drawEnemies
 			if (enemiesOnScreenList.size() > 0) drawEnemies();
 
+			if(bombsOnScreenList.size() > 0) drawBombs();
+
 			player.getSprite().draw(batch);
 
 			checkCollision();
@@ -218,9 +235,23 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		}
 	}
 
+	public void drawBombs() {
+		for(int i = 0; i < bombsOnScreenList.size(); i++) {
+			Bomb bomb = bombsOnScreenList.get(i);
+			bomb.update();
+
+			if( !bomb.isAlive() ) {
+				bombsOnScreenList.remove(bomb);
+				bombsPool.free(bomb);
+			}
+			bomb.getSprite().draw(batch);
+		}
+	}
+
 	public void checkCollision() {
 		playerCollision();
 		enemiesCollision();
+		explosionCollision();
 	}
 
 	public void playerCollision() {
@@ -228,7 +259,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		for( Enemy enemy : enemiesOnScreenList ) {
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
 			if( playerRect.overlaps(enemyRect) && !player.isInvulnerable()) {
-				Gdx.app.log("", "Player got hit");
+//				Gdx.app.log("", "Player got hit");
 				player.getHurt();
 				player.setInvulnerable(true);
 				new Timer().scheduleTask(new Timer.Task() {
@@ -243,6 +274,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	}
 
 	public void enemiesCollision() {
+
+		//Collide with enemies
 		for(int i = 0; i < enemiesOnScreenList.size(); i++ ) {
 			Enemy enemy = enemiesOnScreenList.get(i);
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
@@ -250,15 +283,67 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				Bullet bullet = bulletsOnScreenList.get(j);
 				Rectangle bulletRect = bullet.getSprite().getBoundingRectangle();
 				if(bulletRect.overlaps(enemyRect)) {
-					Gdx.app.log("", enemy.getClass()+" got hit");
+//					Gdx.app.log("", enemy.getClass()+" got hit");
 					bulletsOnScreenList.remove( bullet );
 					enemiesOnScreenList.remove( enemy );
+					dropBomb( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
 					player.addScore( enemy.getScore() );
 				}
 			}
 		}
+
+		//Collide with bombs;
+		for(int i = 0; i < bombsOnScreenList.size(); i++) {
+			final Bomb bomb = bombsOnScreenList.get(i);
+			Rectangle bombRect= bomb.getSprite().getBoundingRectangle();
+			Rectangle playerRect = player.getSprite().getBoundingRectangle();
+			if(bombRect.overlaps(playerRect) && !bomb.isExploding()) {
+				startExplosion(bomb);
+			}
+		}
+	}
+
+	private void startExplosion(final Bomb bomb) {
+		bomb.startExplode();
+		new Timer().scheduleTask(new Timer.Task() {
+			@Override
+			public void run() {
+				bombsOnScreenList.remove(bomb);
+				bombsPool.free(bomb);
+			}
+		}, 3, 0, 1);
+	}
+
+	private void explosionCollision() {
+		for(int i = 0; i < bombsOnScreenList.size(); i++) {
+			Bomb explodingBomb = bombsOnScreenList.get(i);
+			if(explodingBomb.isExploding()) {
+				Rectangle explosionRanges = explodingBomb.getSprite().getBoundingRectangle();
+				for(int j = 0; j < enemiesOnScreenList.size(); j++) {
+					Enemy enemy = enemiesOnScreenList.get(j);
+					Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
+					if( explosionRanges.overlaps( enemyRect )) {
+						enemiesOnScreenList.remove( enemy );
+						enemiesPool.free( enemy );
+					}
+				}
+			}
+		}
+	}
+
+	private void dropBomb(Enemy enemy) {
+//		int chance = (int) Math.floor( Math.random() * 100);
+//		if( chance < 50 ) {
+			Bomb bomb = bombsPool.obtain();
+			if(bomb.getSprite() == bomb.bombSprite) {
+				bomb.init(enemy.getpX(), enemy.getpY());
+				bombsOnScreenList.add(bomb);
+				Gdx.app.log("","Bomb has been dropped");
+			}
+
+//		}
 	}
 
 	@Override
