@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kupewpew.Models.Player;
 
 /**
  * Created by Administrator on 30/5/2559.
@@ -65,6 +66,7 @@ public class GameOverScreen implements Screen {
                 Gdx.app.log("Clicked", "Clicked");
                 ScreenManager.setScreen(new GameStartScreen());
                 Game.startGame = true;
+                Player.getInstance().reset();
 
                 //stage.clear();
             }
