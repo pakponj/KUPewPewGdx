@@ -52,7 +52,9 @@ public class Player {
         this.sprite = new Sprite(jetTexture);
     }
 
+
     public void reset() {
+        this.live = 3;
         this.score = 0;
         this.HP = 3;
         this.bomb = new Stack<Integer>();
@@ -69,8 +71,7 @@ public class Player {
     }
 
     public void getHurt() {
-        //if(!isInvulnerable())
-            this.setHP(this.HP - 1);
+        this.setHP(this.HP - 1);
     }
 
     public boolean isDead() {
@@ -124,6 +125,8 @@ public class Player {
     public void setpY(float pY) {
         this.pY = pY;
     }
+
+    public void updateScore(){ this.score +=1; };
 
     public Sprite getSprite() { return sprite; }
 

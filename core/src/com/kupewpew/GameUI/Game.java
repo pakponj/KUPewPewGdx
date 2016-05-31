@@ -18,12 +18,16 @@ import com.kupewpew.Factories.StraightEnemyFactory;
 import com.kupewpew.Models.Bomb;
 import com.kupewpew.Models.Bullet;
 import com.kupewpew.Models.Player;
+import com.kupewpew.Models.Score;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Game extends ApplicationAdapter implements InputProcessor,Screen {
+public class Game extends ApplicationAdapter implements InputProcessor,Screen ,Observer {
 
+	public static Game instance;
 	public static boolean startGame;
 
 	public final static float BULLET_SPEED = 12f;
@@ -31,8 +35,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	public final static float BOMB_SPEED = 20f;
 
 	private static Rectangle screenRect;
-	private final Timer.Task enemyTimer;
-	private final Timer.Task bulletTimer;
+	private final Timer.Task enemyTimer, bulletTimer;
 
 	private	SpriteBatch batch;
 	private Player player;
@@ -47,28 +50,30 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	private List<Bomb> bombsOnScreenList;
 	private Pool<Bomb> bombsPool;
 
-	private List<Bomb> explosionsOnScreenList;
-
 	private static ApproachEnemyFactory approachEnemyFactory = new ApproachEnemyFactory();
 	private static StraightEnemyFactory straightEnemyFactory = new StraightEnemyFactory();
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
-	StringBuilder scoreBuilder;
+	String score;
+//	StringBuilder scoreBuilder;
 	StringBuilder hpBuilder;
-
-	private Bomb bombToRemove;
-
 	private BitmapFont font;
+
+	private Score observable;
+	private static int maxScore;
 
 	public Game() {
 
 		//Score Thing
-		scoreBuilder = new StringBuilder("Score : ");
+		score = "Score : ";
+//		scoreBuilder = new StringBuilder("Score : ");
 		hpBuilder = new StringBuilder("HP : ");
-
 		font = new BitmapFont();
 		font.getData().setScale(5,5);
 		font.setColor(Color.BLACK);
+
+		observable = new Score();
+		observable.addObserver(this);
 
 		player = Player.getInstance();
 
@@ -76,7 +81,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		bulletsOnScreenList = new ArrayList<Bullet>();
 		enemiesOnScreenList = new ArrayList<Enemy>();
 		bombsOnScreenList = new ArrayList<Bomb>();
-		explosionsOnScreenList = new ArrayList<Bomb>();
 
 		bulletsPool = new Pool<Bullet>() {
 			@Override
@@ -100,8 +104,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		Gdx.app.log("Screen's width", "" + Gdx.app.getGraphics().getWidth());
-		Gdx.app.log("Screen's height", "" + Gdx.app.getGraphics().getHeight());
+//		Gdx.app.log("Screen's width", "" + Gdx.app.getGraphics().getWidth());
+//		Gdx.app.log("Screen's height", "" + Gdx.app.getGraphics().getHeight());
 		screenRect = new Rectangle(0, 0, w, h);
 
 		batch = new SpriteBatch();
@@ -122,7 +126,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				enemy.init(spawnX, spawnY);
 				enemiesOnScreenList.add(enemy);
 
-				Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
+//				Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
 			}
 		}, 1, 0.75f);
 
@@ -133,7 +137,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				Bullet bullet = bulletsPool.obtain();
 				bullet.init(player.getpX(), player.getpY());
 				bulletsOnScreenList.add(bullet);
-				Gdx.app.log("Bullets #",""+bulletsOnScreenList.size());
+//				Gdx.app.log("Bullets #",""+bulletsOnScreenList.size());
 
 			}
 		}, 1, 0.75f);
@@ -142,7 +146,9 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	}
 
 	public static Game getInstance() {
-		return new Game();
+		if(instance == null)
+			instance = new Game();
+		return instance;
 	}
 
 	@Override
@@ -161,31 +167,33 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	}
 
 	public void resetGame() {
-		ScreenManager.setScreen(new GameOverScreen());
-		startGame = false;
 		bulletTimer.cancel();
 		enemyTimer.cancel();
+		ScreenManager.setScreen(new GameOverScreen());
+		startGame = false;
+		instance = new Game();
 		Gdx.app.log("Player'Status", "You are Dead");
 	}
 
 	@Override
 	public void render (SpriteBatch sb) {
 
+//		Gdx.app.log("Score" , score);
+
 		this.batch = sb;
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		batch.begin();
 		//draw font
-		font.draw(sb, scoreBuilder.toString() + player.getScore(), 0, Gdx.graphics.getHeight() * 0.9f );
-		font.draw(sb, hpBuilder.toString() + player.getHP(), Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.8f );
-//		font.draw(sb, score, 0 , Gdx.graphics.getHeight() -30 );
+		batch.begin();
+		font.draw(sb, score, 0 , Gdx.graphics.getHeight() * 0.95f );
+		font.draw(sb, hpBuilder.toString() + player.getHP(), 0, Gdx.graphics.getHeight() * 0.9f );
 		batch.end();
 
 		batch.begin();
 
 		if( player.isDead() ) {
+			maxScore = observable.getScore();
 			resetGame();
 		} else {
 			//separate to drawPlayer
@@ -206,8 +214,10 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		batch.end();
 	}
 
-	public void drawBullets() {
 
+	public static Rectangle getScreenRect() { return screenRect; }
+
+	public void drawBullets() {
 		for(int i = 0; i < bulletsOnScreenList.size(); i++) {
 			Bullet bullet = bulletsOnScreenList.get(i);
 			bullet.update();
@@ -219,8 +229,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 			bullet.getSprite().draw(batch);
 		}
 	}
-
-	public static Rectangle getScreenRect() { return screenRect; }
 
 	public void drawEnemies() {
 		for(int i = 0; i < enemiesOnScreenList.size(); i++) {
@@ -284,12 +292,17 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				Rectangle bulletRect = bullet.getSprite().getBoundingRectangle();
 				if(bulletRect.overlaps(enemyRect)) {
 //					Gdx.app.log("", enemy.getClass()+" got hit");
+
+					observable.ready();
+					observable.updateScore( enemy.getScore() );
+
 					bulletsOnScreenList.remove( bullet );
 					enemiesOnScreenList.remove( enemy );
 					dropBomb( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
-					player.addScore( enemy.getScore() );
+
+//					player.addScore( enemy.getScore() );
 				}
 			}
 		}
@@ -325,6 +338,10 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 					Enemy enemy = enemiesOnScreenList.get(j);
 					Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
 					if( explosionRanges.overlaps( enemyRect )) {
+
+						observable.ready();
+						observable.updateScore( enemy.getScore() );
+
 						enemiesOnScreenList.remove( enemy );
 						enemiesPool.free( enemy );
 					}
@@ -334,8 +351,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 	}
 
 	private void dropBomb(Enemy enemy) {
-//		int chance = (int) Math.floor( Math.random() * 100);
-//		if( chance < 50 ) {
+		int chance = (int) Math.floor( Math.random() * 100);
+		if( chance < 15 ) {
 			Bomb bomb = bombsPool.obtain();
 			if(bomb.getSprite() == bomb.bombSprite) {
 				bomb.init(enemy.getpX(), enemy.getpY());
@@ -343,7 +360,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 				Gdx.app.log("","Bomb has been dropped");
 			}
 
-//		}
+		}
 	}
 
 	@Override
@@ -391,7 +408,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 
 	private Enemy createEnemy() {
 		if( enemyTexture == null ) enemyTexture = new Texture(Gdx.files.internal("invader1_64x64.png"));
-		int random = (int) Math.floor(Math.random() * 7 );
+		int random = (int) Math.floor(Math.random() * 7);
 		if(random == 0) {
 			return approachEnemyFactory.createEnemy(enemyTexture, ENEMY_SPEED);
 		} else if(random == 1) {
@@ -399,5 +416,16 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 		} else {
 			return spiralEnemyFactory.createEnemy(enemyTexture, ENEMY_SPEED);
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		Gdx.app.log("Score after updated", arg.toString() );
+		score = "Score : " + (Integer) arg;
+	}
+
+	public static int getMaxScore()
+	{
+		return maxScore;
 	}
 }

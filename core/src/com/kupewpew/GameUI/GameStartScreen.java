@@ -2,10 +2,13 @@ package com.kupewpew.GameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kupewpew.Models.Player;
 
 
 /**
@@ -51,8 +54,8 @@ public class GameStartScreen implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 Gdx.app.log("Clicked", "Clicked");
-                Game.startGame = true;
                 ScreenManager.setScreen(Game.getInstance());
+                Game.startGame = true;
 
                 //stage.clear();
             }

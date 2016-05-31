@@ -36,7 +36,7 @@ public class GameOverScreen implements Screen {
 
         retry = new Image(retryText);
         retry.setX(Gdx.graphics.getWidth() / 2 - retryText.getWidth() / 4);
-        retry.setY(Gdx.graphics.getHeight() / 10 - retryText.getHeight() / 2 + 200);
+        retry.setY(Gdx.graphics.getHeight() / 3 - retryText.getHeight() / 2);
         retry.setWidth(400);
         retry.setHeight(200);
 
