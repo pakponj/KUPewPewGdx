@@ -9,6 +9,7 @@ public class StraightEnemy extends Enemy{
 
     public StraightEnemy(Texture texture, float speed) {
         super(texture, speed);
+        score = 5;
     }
 
     @Override

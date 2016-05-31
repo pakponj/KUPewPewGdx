@@ -17,6 +17,7 @@ public abstract class Enemy implements Pool.Poolable {
     private int HP;
     private Sprite sprite;
     public boolean alive;
+    protected int score;
 
     public Enemy(Texture texture, float enemySpeed) {
         pX = 0;
@@ -102,4 +103,5 @@ public abstract class Enemy implements Pool.Poolable {
 
     public boolean isAlive() { return alive; }
 
+    public int getScore() { return score; }
 }

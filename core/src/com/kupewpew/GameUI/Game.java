@@ -256,12 +256,8 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen {
 					enemiesOnScreenList.remove( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
-					//score added depends on enemy type
-					//Straight 5
-					//Sprial 10
-					//Approach 25
-					//Something like that
-					player.setScore(player.getScore() + 1);
+//					player.setScore(enemy.getScore());
+//					player.setScore(player.getScore() + 1);
 				}
 			}
 		}

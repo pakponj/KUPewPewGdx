@@ -9,8 +9,8 @@ public class ApproachEnemy extends Enemy {
 
     public ApproachEnemy(Texture texture, float speed) {
         super(texture, speed);
+        score = 25;
     }
-
 
     @Override
     public void getHurt() {

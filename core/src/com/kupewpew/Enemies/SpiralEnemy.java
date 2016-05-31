@@ -9,6 +9,7 @@ public class SpiralEnemy extends Enemy {
 
     public SpiralEnemy(Texture texture, float speed) {
         super(texture, speed);
+        score = 10;
     }
 
     @Override
