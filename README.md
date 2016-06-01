@@ -61,3 +61,25 @@ Mediator
 ---
 **Location:** Game class.  
 **Context:** Our class take all the component and run in the Mediator class that linked all the logic and all the view together.
+
+The Principles that we use in this project
+====
+
+Open Close Principle 
+- Most of our class has the core class as interfaces, and we use the subclass to extends or implement so that the core class will not be change, abd all other class are private so that you can't access from other places.
+
+Don't Repeat Yourself and Single Responsibility Principle
+- The code has only purpose in each Class, we use it as its own and any other class can't substitute that class.
+
+Leskov Substitution Principle
+ - Any other class can act as their own mother class, you can use the subclass as the super class with no error
+
+GRASP
+ - GRASP has really repetitive principle with chaining behavior together. The principle that we use are 
+*Polymorphism - Any other subclass will either be implements or extends from mother class
+*Controller - Our Game class is control by different model
+*Low Coupling - We use mediator class so the each class has its own purpose and linked my mediate class
+*Creator - The factory pattern cover this principle for us
+*Protected Variation - Our code variable are almost all private except the singleton part
+*Pure Fabrication - Our code has its own only purpose for each class
+*Indirection - Game class as the mediator for the game
