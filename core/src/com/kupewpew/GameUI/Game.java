@@ -60,7 +60,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 	private BitmapFont font;
 
 	private Score observable;
-	private static int maxScore;
+	private static int maxScore = 0;
 
 	public Game() {
 
@@ -146,9 +146,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 	}
 
 	public static Game getInstance() {
-		if(instance == null)
-			instance = new Game();
-		return instance;
+		return new Game();
 	}
 
 	@Override
@@ -167,11 +165,10 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 	}
 
 	public void resetGame() {
-		bulletTimer.cancel();
-		enemyTimer.cancel();
 		ScreenManager.setScreen(new GameOverScreen());
 		startGame = false;
-		instance = new Game();
+		bulletTimer.cancel();
+		enemyTimer.cancel();
 		Gdx.app.log("Player'Status", "You are Dead");
 	}
 

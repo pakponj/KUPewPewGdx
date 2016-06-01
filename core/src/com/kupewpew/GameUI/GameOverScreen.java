@@ -42,7 +42,7 @@ public class GameOverScreen implements Screen {
 
         back.setPosition(Gdx.graphics.getHeight() / 2 - bg.getWidth() + 200, Gdx.graphics.getWidth() - bg.getHeight() / 2);
 
-        Gdx.input.setInputProcessor(stage);
+
 
         toMenu = new Image(toMenuText);
         toMenu.setX(Gdx.graphics.getWidth() / 2 - toMenuText.getWidth() / 4);
@@ -62,7 +62,7 @@ public class GameOverScreen implements Screen {
         text.setX(Gdx.graphics.getWidth() / 2 - 50);
         text.setY(Gdx.graphics.getHeight() / 2 - retryText.getHeight() / 2);
 
-
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(back);
         stage.addActor(retry);
         stage.addActor(toMenu);
