@@ -10,17 +10,16 @@ Our Group Member
 
 Brief
 ---
-Our project is space shooting game created by Library called "GDX" this library allow our
-to render easily and take less resource than using Native Android.
+Our project is space shooting game created by Library called "GDX" this library allow us to render easily and take less resource than using Native Android.
 
 How to play :
 ===
-- Touch the Game Start Button
+- Touch the Game Start Button.
 - Use your finger to control your movement.
-- Shoot the enemy as much as you can and you can take the bomb to clear the screen
-- If you die to can press the Retry button to retry again
+- Shoot the enemy as much as you can and you can take the bomb to clear the screen.
+- If you die to can press the Retry button to retry again.
 
-Our Pattern use 6 patterns in total.
+Our Pattern use 8 patterns in total.
 ====
 Singleton
 ---
