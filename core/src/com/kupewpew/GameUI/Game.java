@@ -65,7 +65,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 	public Game() {
 
 		//Score Thing
-		score = "Score : ";
+		score = "Score : 0";
 //		scoreBuilder = new StringBuilder("Score : ");
 		hpBuilder = new StringBuilder("HP : ");
 		font = new BitmapFont();
