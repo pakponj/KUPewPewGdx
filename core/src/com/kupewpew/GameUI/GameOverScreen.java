@@ -22,7 +22,7 @@ public class GameOverScreen implements Screen {
     StringBuilder scoreBuilder;
     private Stage stage;
     private Texture bg;
-    private Image retry;
+    private final Image retry;
 
 
     public GameOverScreen()
@@ -36,7 +36,7 @@ public class GameOverScreen implements Screen {
 
         retry = new Image(retryText);
         retry.setX(Gdx.graphics.getWidth() / 2 - retryText.getWidth() / 4);
-        retry.setY(Gdx.graphics.getHeight() / 3 - retryText.getHeight() / 2);
+        retry.setY(Gdx.graphics.getHeight() / 3 - retryText.getHeight() / 2 - 150);
         retry.setWidth(400);
         retry.setHeight(200);
 
@@ -58,17 +58,9 @@ public class GameOverScreen implements Screen {
         text = new Label("GameOver",textStyle);
         text.setFontScale(7);
         text.setColor(Color.WHITE);
-        text.setText("Score\n"+Player.getInstance().getScore());
+        text.setText("Score\n"+Game.getInstance().getMaxScore());
         text.setX(Gdx.graphics.getWidth() / 2 - 50);
         text.setY(Gdx.graphics.getHeight() / 2 - retryText.getHeight() / 2);
-
-        Label score;
-        score = new Label("score",textStyle);
-        score.setFontScale(7);
-        score.setColor(Color.WHITE);
-        score.setText(""+Player.getInstance().getScore());
-        score.setX((Gdx.graphics.getWidth() / 2 ));
-        score.setY(Gdx.graphics.getHeight() / 2 - retryText.getHeight() / 2 - 150);
 
 
         stage.addActor(back);

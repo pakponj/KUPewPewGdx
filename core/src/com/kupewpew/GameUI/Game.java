@@ -420,8 +420,7 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Gdx.app.log("Score after updated", arg.toString() );
-		score = "Score : " + (Integer) arg;
+		score = "Score : " + observable.getScore();
 	}
 
 	public static int getMaxScore()
