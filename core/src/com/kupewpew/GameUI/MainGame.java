@@ -20,17 +20,14 @@ public class MainGame extends ApplicationAdapter implements ApplicationListener 
     }
 
     @Override
-    public void create()
-    {
+    public void create() {
         batch = new SpriteBatch();
         Button btn = new Button();
         ScreenManager.setScreen(new GameStartScreen());
-
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         if (ScreenManager.getCurrentScreen()!=null)
             ScreenManager.getCurrentScreen().dispose();
         batch.dispose();

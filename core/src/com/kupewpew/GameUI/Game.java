@@ -55,7 +55,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 	private static SpiralEnemyFactory spiralEnemyFactory = new SpiralEnemyFactory();
 
 	String score;
-//	StringBuilder scoreBuilder;
 	StringBuilder hpBuilder;
 	private BitmapFont font;
 
@@ -66,7 +65,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 
 		//Score Thing
 		score = "Score : 0";
-//		scoreBuilder = new StringBuilder("Score : ");
 		hpBuilder = new StringBuilder("HP : ");
 		font = new BitmapFont();
 		font.getData().setScale(5,5);
@@ -103,9 +101,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-
-//		Gdx.app.log("Screen's width", "" + Gdx.app.getGraphics().getWidth());
-//		Gdx.app.log("Screen's height", "" + Gdx.app.getGraphics().getHeight());
 		screenRect = new Rectangle(0, 0, w, h);
 
 		batch = new SpriteBatch();
@@ -125,8 +120,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 				float spawnY =  (Gdx.graphics.getHeight() * 2 / 3) + (float) ( Math.floor(Math.random() * (Gdx.graphics.getHeight() / 3) ) );
 				enemy.init(spawnX, spawnY);
 				enemiesOnScreenList.add(enemy);
-
-//				Gdx.app.log("Enemies #", "On screen: " + enemiesOnScreenList.size());
 			}
 		}, 1, 0.75f);
 
@@ -137,8 +130,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 				Bullet bullet = bulletsPool.obtain();
 				bullet.init(player.getpX(), player.getpY());
 				bulletsOnScreenList.add(bullet);
-//				Gdx.app.log("Bullets #",""+bulletsOnScreenList.size());
-
 			}
 		}, 1, 0.75f);
 
@@ -174,9 +165,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 
 	@Override
 	public void render (SpriteBatch sb) {
-
-//		Gdx.app.log("Score" , score);
-
 		this.batch = sb;
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -264,7 +252,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 		for( Enemy enemy : enemiesOnScreenList ) {
 			Rectangle enemyRect = enemy.getSprite().getBoundingRectangle();
 			if( playerRect.overlaps(enemyRect) && !player.isInvulnerable()) {
-//				Gdx.app.log("", "Player got hit");
 				player.getHurt();
 				player.setInvulnerable(true);
 				new Timer().scheduleTask(new Timer.Task() {
@@ -288,8 +275,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 				Bullet bullet = bulletsOnScreenList.get(j);
 				Rectangle bulletRect = bullet.getSprite().getBoundingRectangle();
 				if(bulletRect.overlaps(enemyRect)) {
-//					Gdx.app.log("", enemy.getClass()+" got hit");
-
 					observable.ready();
 					observable.updateScore( enemy.getScore() );
 
@@ -298,8 +283,6 @@ public class Game extends ApplicationAdapter implements InputProcessor,Screen ,O
 					dropBomb( enemy );
 					bulletsPool.free( bullet );
 					enemiesPool.free( enemy );
-
-//					player.addScore( enemy.getScore() );
 				}
 			}
 		}

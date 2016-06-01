@@ -13,11 +13,6 @@ public class ApproachEnemy extends Enemy {
     }
 
     @Override
-    public void getHurt() {
-        super.getHurt();
-    }
-
-    @Override
     public void move() {
         super.move();
     }

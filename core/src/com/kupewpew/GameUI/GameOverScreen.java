@@ -42,8 +42,6 @@ public class GameOverScreen implements Screen {
 
         back.setPosition(Gdx.graphics.getHeight() / 2 - bg.getWidth() + 200, Gdx.graphics.getWidth() - bg.getHeight() / 2);
 
-
-
         toMenu = new Image(toMenuText);
         toMenu.setX(Gdx.graphics.getWidth() / 2 - toMenuText.getWidth() / 4);
         toMenu.setY(Gdx.graphics.getHeight() / 10 - toMenuText.getHeight() / 2);
@@ -100,14 +98,9 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(SpriteBatch sb) {
-
         sb.begin();
         stage.act(Gdx.graphics.getDeltaTime());
-        // sb.draw(bg, Gdx.graphics.getHeight() / 2 - bg.getWidth() + 200, Gdx.graphics.getWidth() - bg.getHeight() / 2);
-
         stage.draw();
-
-
         sb.end();
     }
 

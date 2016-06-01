@@ -11,6 +11,7 @@ import com.kupewpew.Strategies.Strategy;
  */
 public class SpiralEnemyFactory implements EnemyFactory {
     Strategy spiralEnemyStrategy = new SpiralEnemyStrategy();
+
     @Override
     public Enemy createEnemy(Texture texture, float speed) {
         Enemy spiralEnemy = new SpiralEnemy(texture, speed);

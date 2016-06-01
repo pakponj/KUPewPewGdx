@@ -13,11 +13,6 @@ public class SpiralEnemy extends Enemy {
     }
 
     @Override
-    public void getHurt() {
-        super.getHurt();
-    }
-
-    @Override
     public void move() {
         super.move();
     }

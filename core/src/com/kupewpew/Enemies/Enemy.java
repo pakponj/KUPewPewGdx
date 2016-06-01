@@ -39,9 +39,6 @@ public abstract class Enemy implements Pool.Poolable {
         this.HP = 3;
     }
 
-    public void getHurt() {
-        //TODO Need to implement.
-    }
     public void move() {
         strategy.move(this);
     }
@@ -50,20 +47,12 @@ public abstract class Enemy implements Pool.Poolable {
         this.strategy = strategy;
     }
 
-    public int getHP() {
-        return HP;
-    }
-
     public float getpX() {
         return pX;
     }
 
     public float getpY() {
         return pY;
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
     }
 
     public void init(float posX, float posY) {

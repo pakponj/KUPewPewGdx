@@ -14,7 +14,6 @@ public class ScreenManager {
         currentScreen.create();
     }
 
-
     public static Screen getCurrentScreen() {
         return currentScreen;
     }

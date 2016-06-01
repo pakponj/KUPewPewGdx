@@ -12,8 +12,6 @@ import com.kupewpew.Strategies.Strategy;
 public class StraightEnemyFactory implements EnemyFactory{
     Strategy straightEnemyStrategy = new StraightEnemyStrategy();
 
-//    private static final Texture texture = new Texture(Gdx.files.internal("invader1_64x64.png"));
-
     public StraightEnemyFactory() {
 
     }

@@ -30,26 +30,6 @@ public class Bomb implements Pool.Poolable {
         sprite = bombSprite;
     }
 
-    public float getPosX() {
-        return posX;
-    }
-
-    public void setPosX(float pX) {
-        this.posX = pX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float pY) {
-        this.posY = pY;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
     public void init(float posX, float posY) {
         this.posX = posX;
         this.posY = posY;
@@ -75,9 +55,6 @@ public class Bomb implements Pool.Poolable {
 
     public Sprite getSprite() { return sprite; }
 
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
     public void startExplode(/*Pool bombsPool, List<Bomb> explosionsList*/) {
         sprite = explosionSprite;
         sprite.setPosition(Player.getInstance().getpX() - sprite.getWidth()/2, Player.getInstance().getpY() - sprite.getHeight()/2);
@@ -97,11 +74,6 @@ public class Bomb implements Pool.Poolable {
         alive = false;
     }
 
-    public void setAlive(boolean alive) { this.alive = alive; }
-
     public boolean isExploding() { return exploding; }
 
-    public void setExploding(boolean exploding) {
-        this.exploding = exploding;
-    }
 }

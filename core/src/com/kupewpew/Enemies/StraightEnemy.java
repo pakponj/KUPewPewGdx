@@ -18,11 +18,6 @@ public class StraightEnemy extends Enemy{
     }
 
     @Override
-    public void getHurt() {
-        super.getHurt();
-    }
-
-    @Override
     public void reset() {
 
     }

@@ -14,15 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class GameStartScreen implements Screen {
 
     SpriteBatch sb;
-
     private Stage stage;
     private Texture bg;
     private Image img;
 
-
-    public GameStartScreen()
-    {
-
+    public GameStartScreen() {
         stage = new Stage();
 
         Texture startgame = new Texture(Gdx.files.internal("startgame.jpg"));

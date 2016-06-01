@@ -11,7 +11,6 @@ import com.kupewpew.GameUI.Game;
  */
 public class Bullet implements Pool.Poolable {
 
-    //    private Vector2 pos, direction;
     private float posX, posY, speed;
     private boolean alive;
     private Sprite sprite;
@@ -29,22 +28,6 @@ public class Bullet implements Pool.Poolable {
         this.posY = posY;
         sprite.setPosition(posX, posY);
         alive = true;
-    }
-
-    public float getPosX() {
-        return posX;
-    }
-
-    public void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
     }
 
     @Override
