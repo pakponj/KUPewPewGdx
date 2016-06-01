@@ -1,10 +1,10 @@
 Welcome to KUPewPew, our group final project.
 ==========
 
-Our Group Member
+Members
 ----
 * 5710547182 Thanawit Gerdprasert
-* 5710476381 Pakpon Jetapai
+* 5710546381 Pakpon Jetapai
 * 5710546372 Pipatpol Tanavongchinda
 
 
@@ -29,7 +29,7 @@ Singleton
 Strategy
 --
 **Location:** Strategy Package.  
-**Context:** Our Enemy class is move in different type , so we use Strategy to separate the move set, it can move
+**Context:** Our Enemy class is move in different type, so we use Strategy to separate the move set, it can move
 in the straight line, approaching and Spiral.
 
 Factory
@@ -40,11 +40,11 @@ Factory
 State
 ---
 **Location:** ScreenManager class.  
-**Context:** State is break down into different State, GameStart , GameRunning , GameOver so we use ScreenManager to control the flow of the State.
+**Context:** State is break down into different State, GameStart, GameRunning, GameOver so we use ScreenManager to control the flow of the State.
 
 Observer
 ---
-**Location:** Game class as Observer , Score class as Observable.  
+**Location:** Game class as Observer, Score class as Observable.  
 **Context:** We want the Score class to update whenever the bullet is hit the enemy so we use this class in order to.
 
 FlyWeight
